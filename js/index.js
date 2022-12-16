@@ -1,7 +1,9 @@
+import { KEY } from "./api-key";
+
 const options = {
   method: "GET",
   headers: {
-    "X-RapidAPI-Key": "e13982b2b1msh931ada47993b23ap125fccjsnd11ad77109b5",
+    "X-RapidAPI-Key": KEY,
     "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
   },
 };
