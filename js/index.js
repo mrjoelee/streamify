@@ -6,74 +6,88 @@ const options = {
   },
 };
 
-const searchBtn = document.getElementById("search");
-searchBtn.addEventListener("click", handleAddSubmit);
+// const searchBtn = document.getElementById("search");
+// searchBtn.addEventListener("submit", handleAddSubmit);
 
-function handleAddSubmit(event) {
-  event.preventDefault();
-  //   if (event.key === "Enter") {
-  //     searchBtn.click();
-  //   }
+try {
+  document
+    .getElementById("search-form")
+    .addEventListener("submit", handleAddSubmit);
 
-  const inputValue = document.getElementById("search-input").value;
+  async function handleAddSubmit(event) {
+    event.preventDefault();
 
-  const resource = `https://streaming-availability.p.rapidapi.com/search/ultra?country=us&services=netflix%2Chulu&type=movie&order_by=imdb_vote_count&year_min=2000&year_max=2020&page=1&genres=18%2C80&genres_relation=or&desc=true&language=en&${inputValue}&output_language=en`;
+    const inputValue = document.getElementById("search-input").value;
 
-  fetch(resource, options)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      for (let i = 0; i < data.results.length - 1; i++) {
-        const cardCol = document.createElement("div");
-        cardCol.classList.add(
-          "col-lg-3",
-          "col-md-4",
-          "col-sm-6",
-          "d-flex",
-          "justify-content-center",
-          "m-4"
-        );
-        cardCol.innerHTML = `<div class="card">
-        <a target="_blank" id="stream"> <img class="card-img-top" /> </a>
-      
-       <div class="card-body d-flex flex-column justify-content-between ">
-          <h5 class="card-title"></h5>
-          <iframe id="video"></iframe>
-          <p class="card-text"></p>
-          <div>
-      `;
+    const resource = `https://streaming-availability.p.rapidapi.com/search/ultra?country=us&services=netflix%2Chulu&type=movie&order_by=imdb_vote_count&page=1&genres=18%2C80&genres_relation=or&desc=true&language=en&keyword=${inputValue}&output_language=en`;
 
-        const url = data.results[i].posterURLs.original;
-        const title = data.results[i].title;
-        const text = data.results[i].overview;
-        // const nfStream = data.results[i].streamingInfo.netflix.us.link;
-        // const huluStream = data.results[i].streamingInfo.hulu.us.link;
-        const video = data.results[i].video;
+    //it's not going to proceed to the next line until it fetches the resource.
+    const response = await fetch(resource, options);
 
-        // if (nfStream) {
-        //   cardCol.querySelector("#stream").setAttribute("href", nfStream);
-        // } else {
-        //   cardCol.querySelector("#stream").setAttribute("href", "");
-        // }
+    // parsing it to json to JS data.
+    const data = await response.json();
+    console.log(data);
 
-        // if (huluStream) {
-        //   cardCol.querySelector("#stream").setAttribute("href", huluStream);
-        // } else {
-        //   cardCol.querySelector("#stream").setAttribute("href", "");
-        // }
+    const cardContainer = document.getElementById("cardContainer");
 
-        cardCol.querySelector(".card-title").textContent = title;
-        cardCol.querySelector(".card-text").textContent = text;
-        cardCol.querySelector(".card-img-top").setAttribute("src", url);
-        // cardCol.querySelector("#stream").setAttribute("href", nfStream);
-        // cardCol.querySelector("#stream").setAttribute("href", huluStream);
-        cardCol
-          .querySelector("#video")
-          .setAttribute("src", `https://www.youtube.com/embed/${video}`);
+    //TODO: maybe needs a try catch
 
-        const cardContainer = document.getElementById("cardContainer");
-        cardContainer.append(cardCol);
+    //clear the movies that were added.
+    clearMovies();
+    for (let i = 0; i < data.results.length - 1; i++) {
+      const cardCol = document.createElement("div");
+      cardCol.classList.add(
+        "col-lg-3",
+        "col-md-4",
+        "col-sm-6",
+        "d-flex",
+        "justify-content-center",
+        "mt-4"
+      );
+      cardCol.innerHTML = `<div class="card">
+      <a target="_blank" id="stream"> <img class="card-img-top" /> </a>
+    
+     <div class="card-body d-flex flex-column justify-content-between ">
+     <a id="netflix"></a>
+     <a target="_blank" id="hulu"> </a>
+
+        <h5 class="card-title"></h5>
+        <iframe id="video"></iframe>
+        <p class="card-text"></p>
+        <div>`;
+
+      const url = data.results[i].posterURLs.original;
+      const title = data.results[i].title;
+      const text = data.results[i].overview;
+      const stream = data.results[i].streamingInfo;
+
+      if (stream.hasOwnProperty("netflix")) {
+        const netflix = stream.netflix.us.link;
+        cardCol.querySelector("#netflix").setAttribute("href", netflix);
+      } else if (stream.hasOwnProperty("hulu")) {
+        const hulu = stream.hulu.us.link;
+        cardCol.querySelector("#hulu").setAttribute("href", hulu);
       }
-    })
-    .catch((err) => console.error(err));
+
+      const video = data.results[i].video;
+
+      cardCol.querySelector(".card-title").textContent = title;
+      cardCol.querySelector(".card-text").textContent = text;
+      cardCol.querySelector(".card-img-top").setAttribute("src", url);
+      cardCol
+        .querySelector("#video")
+        .setAttribute("src", `https://www.youtube.com/embed/${video}`);
+
+      cardContainer.append(cardCol);
+    }
+  }
+} catch (err) {
+  console.error(err);
+}
+
+function clearMovies() {
+  const cardContainer = document.querySelector("#cardContainer");
+  while (cardContainer.firstElementChild) {
+    cardContainer.firstElementChild.remove();
+  }
 }
