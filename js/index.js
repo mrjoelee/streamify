@@ -17,7 +17,7 @@ function handleAddSubmit(event) {
 
   const inputValue = document.getElementById("search-input").value;
 
-  const resource = `https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=18&keyword=${inputValue}&page=1&output_language=en&language=en`;
+  const resource = `https://streaming-availability.p.rapidapi.com/search/ultra?country=us&services=netflix%2Chulu&type=movie&order_by=imdb_vote_count&year_min=2000&year_max=2020&page=1&genres=18%2C80&genres_relation=or&desc=true&language=en&${inputValue}&output_language=en`;
 
   fetch(resource, options)
     .then((response) => response.json())
@@ -30,7 +30,8 @@ function handleAddSubmit(event) {
           "col-md-4",
           "col-sm-6",
           "d-flex",
-          "justify-content-center"
+          "justify-content-center",
+          "m-4"
         );
         cardCol.innerHTML = `<div class="card">
         <a target="_blank" id="stream"> <img class="card-img-top" /> </a>
@@ -45,13 +46,27 @@ function handleAddSubmit(event) {
         const url = data.results[i].posterURLs.original;
         const title = data.results[i].title;
         const text = data.results[i].overview;
-        const stream = data.results[i].streamingInfo.netflix.us.link;
+        // const nfStream = data.results[i].streamingInfo.netflix.us.link;
+        // const huluStream = data.results[i].streamingInfo.hulu.us.link;
         const video = data.results[i].video;
+
+        // if (nfStream) {
+        //   cardCol.querySelector("#stream").setAttribute("href", nfStream);
+        // } else {
+        //   cardCol.querySelector("#stream").setAttribute("href", "");
+        // }
+
+        // if (huluStream) {
+        //   cardCol.querySelector("#stream").setAttribute("href", huluStream);
+        // } else {
+        //   cardCol.querySelector("#stream").setAttribute("href", "");
+        // }
 
         cardCol.querySelector(".card-title").textContent = title;
         cardCol.querySelector(".card-text").textContent = text;
         cardCol.querySelector(".card-img-top").setAttribute("src", url);
-        cardCol.querySelector("#stream").setAttribute("href", stream);
+        // cardCol.querySelector("#stream").setAttribute("href", nfStream);
+        // cardCol.querySelector("#stream").setAttribute("href", huluStream);
         cardCol
           .querySelector("#video")
           .setAttribute("src", `https://www.youtube.com/embed/${video}`);
