@@ -26,9 +26,14 @@ darkMode.addEventListener('click', ()=> {
     rotate: toggle ? 0 : 320
   }, '-= 150')   // -= is used for duration
   .add({
-    targets: "section",
-    backgroundColor: toggle ? 'rgb(255,255,255)' : "rgb(22,22,22)",
-    color: toggle? "rgb(22,22,22)" : "rgb(255,255,255)"
+    targets: "body",
+    backgroundColor: toggle ? 'rgb(240,240,240)' : "rgb(60,60,80)",
+    color: toggle ? "rgb(22,22,22)" : "rgb(255,255,255)"
+  }, '-= 150')
+  .add({
+    targets: ["nav", "section", ".navbar-brand"],
+    backgroundColor: toggle ? 'rgb(60,60,80)' : 'rgb(240,240,240)',
+    color: toggle ? 'rgb(255,255,255)' : 'rgb(22,22,22)'
   }, '-= 150');
   //Everytime we click on the sun toggle switches from true to false
   toggle = !toggle;

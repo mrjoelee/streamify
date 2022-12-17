@@ -6,13 +6,23 @@
   box-sizing: border-box;
 }
 
-section{
-  height: 100vh;
-  background: rgb(255,255,255);
+nav {
+    background-color: rgb(60,60,80);
+}
+
+.navbar-brand {
+    color: rgb(255,255,255);
+    font-size: 24pt;
+}
+
+section {
+  width: min-content;
+  background: rgb(60,60,80);
   display:flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
+  display: inline-block;
 }
 
 svg{
