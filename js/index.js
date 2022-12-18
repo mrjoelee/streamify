@@ -23,7 +23,7 @@ function handleAddSubmitTitle(event) {
       output_language: "en",
     },
     headers: {
-      "X-RapidAPI-Key": "fa0586e4cfmsh7f4e00de64e8f8cp134e8ajsn1a8ff941bcbc",
+      "X-RapidAPI-Key": "e3e6e19587msh1f7d7623b368827p128deajsn6a511e58e6a7",
       "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
     },
   };
