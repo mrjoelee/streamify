@@ -126,11 +126,11 @@ function renderData(data) {
             <div class="card__content">
               <div class="card__header">
                 <h5 class="card-title"></h5>
-                <i class="bi bi-youtube"></i>
+                <a  id="video" href="url"><i class="bi bi-youtube"></i></a> 
               </div>
               <div class="card__body">
                 
-        <iframe id="video"></iframe>
+        
         <p class="card-text"></p>
               </div>
             </div>
@@ -163,7 +163,7 @@ function renderData(data) {
       cardCol.querySelector(".card-img-top").setAttribute("src", url);
       cardCol
         .querySelector("#video")
-        .setAttribute("src", `https://www.youtube.com/embed/${video}`);
+        .setAttribute("href", `https://www.youtube.com/embed/${video}`);
 
       cardContainer.append(cardCol);
       //toggles the flip method
