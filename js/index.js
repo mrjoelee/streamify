@@ -102,7 +102,10 @@ function renderData(data) {
   const cardContainer = document.getElementById("cardContainer");
   //if the search is empty, then alert the user
   if (data.length === 0) {
-    cardContainer.innerHTML = `<p>Sorry, No results. Please try Again</p>`;
+    cardContainer.innerHTML = `
+    <small class="d-flex justify-content-center text-danger">
+      Invalid. Please Try Again
+    </small>`;
   } else {
     data.forEach((movie) => {
       const cardCol = document.createElement("div");
