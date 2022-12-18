@@ -118,16 +118,26 @@ function renderData(data) {
         "mt-4"
       );
       cardCol.innerHTML = `<div class="card">
-      <a target="_blank" id="stream"> <img class="card-img-top" /> </a>
-    
-     <div class="card-body d-flex flex-column justify-content-between ">
-     <a id="netflix"></a>
-     <a target="_blank" id="hulu"> </a>
-    
-        <h5 class="card-title"></h5>
+        <div class="card__inner">
+          <div class="card__face card__face--front">
+            <img class="card-img-top" /> 
+          </div>
+          <div class="card__face card__face--back">
+            <div class="card__content">
+              <div class="card__header">
+                <h5 class="card-title"></h5>
+                <i class="bi bi-youtube"></i>
+              </div>
+              <div class="card__body">
+                
         <iframe id="video"></iframe>
         <p class="card-text"></p>
-        <div>`;
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
 
       //movie data for title = result and keyboard = results (variable that is getting from the api).
       const url = movie.posterURLs.original;
@@ -156,6 +166,12 @@ function renderData(data) {
         .setAttribute("src", `https://www.youtube.com/embed/${video}`);
 
       cardContainer.append(cardCol);
+      const flip = cardCol.querySelector(".card__inner");
+      flip.addEventListener("click", function (e) {
+        flip.classList.toggle("is-flipped");
+        console.log(e.target);
+      });
+      console.log(flip);
     });
   }
 }
