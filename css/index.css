@@ -14,7 +14,7 @@
   border-color: black; */
 }
 nav {
-  background-color: rgb(60, 60, 80);
+  background-color: #6c757d;
 }
 
 .navbar-brand {
@@ -24,7 +24,7 @@ nav {
 
 section {
   width: min-content;
-  background: rgb(60, 60, 80);
+  background: rgb(255, 255, 255);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -34,6 +34,7 @@ section {
 
 svg {
   cursor: pointer;
+  background-color: #6c757d;
 }
 
 body {
