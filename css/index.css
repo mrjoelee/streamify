@@ -42,6 +42,7 @@ body {
   width: 280px;
   height: 400px;
   perspective: 1000px;
+  background-color: rgb(60, 58, 58);
 }
 
 .card__inner {
@@ -139,9 +140,10 @@ body {
 }
 
 .card__body p {
-  color: var(--dark);
+  /* color: var(--dark);
   font-size: 18px;
-  line-height: 1.4;
+  line-height: 1.4; */
+  font-size: 1.5vmin;
 }
 
 .card-img-top {
@@ -154,10 +156,17 @@ body {
 
 .bi-youtube {
   color: red;
+}
+
+#video {
   padding-left: 85%;
 }
+
+/* .card-text { */
+/* font-size: smaller;
+  max-height: 10px; */
 
 /* #youtube {
   font-family: "Bootstrap-icons";
   color: red;
-} */ ;
+} */
