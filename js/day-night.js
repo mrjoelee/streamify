@@ -41,7 +41,7 @@ darkMode.addEventListener("click", () => {
     )
     .add(
       {
-        targets: ["nav", "section", ".navbar-brand"],
+        targets: ["nav", "section", ".navbar-brand", ".card"],
         backgroundColor: toggle ? "rgb((255,255,255)" : "rgb(108, 117, 125)",
         color: toggle ? "rgb(255,255,255)" : "rgb(22,22,22)",
       },
