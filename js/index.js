@@ -7,6 +7,52 @@ document
   .getElementById("search-keyboard")
   .addEventListener("submit", handleAddSubmitKeyboard);
 
+const selectPage = document.getElementById("navPage");
+selectPage.addEventListener("change", displayNewPage);
+
+async function displayNewPage(e) {
+  // console.log(e.target.value);
+
+  let page = e.target.value;
+  // debugger;
+
+  //gets the data attribute that was set from the search input
+  const inputValue = selectPage.getAttribute("data-userInput");
+
+  let response = await axios.get(
+    "https://streaming-availability.p.rapidapi.com/search/ultra",
+    {
+      headers: {
+        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
+        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
+      },
+      params: {
+        country: "us",
+        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
+        type: "movie",
+        order_by: "imdb_vote_count",
+        year_min: "1900",
+        year_max: "2022",
+        //same variable as page ("above")
+        page,
+        // genres: "18,80",
+        // genres_relation: "or",
+        desc: "true",
+        // language: "en",
+        // min_imdb_rating: "70",
+        // max_imdb_rating: "90",
+        // min_imdb_vote_count: "10000",
+        // max_imdb_vote_count: "1000000",
+        keyword: `${inputValue}`,
+        // output_language: "en",
+      },
+    }
+  );
+
+  const dataKeyboard = response.data;
+  renderData(dataKeyboard.results);
+}
+
 function handleAddSubmitTitle(event) {
   event.preventDefault();
 
@@ -21,6 +67,7 @@ function handleAddSubmitTitle(event) {
       country: "us",
       type: "all",
       output_language: "en",
+      pages: "all",
     },
     headers: {
       "X-RapidAPI-Key": "e3e6e19587msh1f7d7623b368827p128deajsn6a511e58e6a7",
@@ -33,6 +80,7 @@ function handleAddSubmitTitle(event) {
     .then(function (response) {
       const dataTitle = response.data;
       console.log(dataTitle);
+      console.log(dataTitle.total_page);
       //clear the movies that were added.
       renderData(dataTitle.result);
     })
@@ -43,66 +91,123 @@ function handleAddSubmitTitle(event) {
 
 //Search input by keyboard
 
-function handleAddSubmitKeyboard(event) {
+async function handleAddSubmitKeyboard(event) {
   event.preventDefault();
   const inputValue = document.getElementById("keyboard-input").value;
   //clears the forms after it hit searches
   document.getElementById("search-keyboard").reset();
 
-  const optionsKeyboard = {
-    method: "GET",
-    url: "https://streaming-availability.p.rapidapi.com/search/ultra",
-    params: {
-      country: "us",
-      services: "netflix,hulu,prime,disney,hbo,peacock,paramount,apple",
-      type: "movie",
-      order_by: "imdb_vote_count",
-      // year_min: "2000",
-      // year_max: "2020",
-      page: "1",
-      genres: "18,80",
-      genres_relation: "or",
-      desc: "true",
-      language: "en",
-      // min_imdb_rating: "70",
-      // max_imdb_rating: "90",
-      // min_imdb_vote_count: "10000",
-      // max_imdb_vote_count: "1000000",
-      keyword: `${inputValue}`,
-      output_language: "en",
-    },
-    headers: {
-      "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
-      "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-    },
-  };
+  let totalPages = 0;
+  let page = 1;
+  // debugger;
+  let response = await axios.get(
+    "https://streaming-availability.p.rapidapi.com/search/ultra",
+    {
+      headers: {
+        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
+        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
+      },
+      params: {
+        country: "us",
+        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
+        type: "movie",
+        order_by: "imdb_vote_count",
+        year_min: "1900",
+        year_max: "2022",
+        page: "1",
+        // genres: "18,80",
+        // genres_relation: "or",
+        desc: "true",
+        // language: "en",
+        // min_imdb_rating: "70",
+        // max_imdb_rating: "90",
+        // min_imdb_vote_count: "10000",
+        // max_imdb_vote_count: "1000000",
+        keyword: `${inputValue}`,
+        // output_language: "en",
+      },
+    }
+  );
 
-  axios
-    .request(optionsKeyboard)
-    .then(function (response) {
-      const dataKeyboard = response.data;
-      console.log(dataKeyboard);
-      console.log(dataKeyboard.total_pages);
-      //clear the movies that were added.
-      renderData(dataKeyboard.results);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
-}
+  const dataKeyboard = response.data;
+  totalPages = dataKeyboard.total_pages;
+  renderData(dataKeyboard.results);
 
-function clearMovies() {
-  const cardContainer = document.querySelector("#cardContainer");
-  while (cardContainer.firstElementChild) {
-    cardContainer.firstElementChild.remove();
+  //maintains the input search since it clears the input after the search is submit
+  selectPage.setAttribute("data-userInput", inputValue);
+
+  //will remove pages from new search that have multiple pages
+  clearChildrenElement(selectPage);
+  if (totalPages > 1) {
+    for (let i = 1; i <= totalPages; i++) {
+      // <option value="1">1</option>
+
+      selectPage.insertAdjacentHTML(
+        "beforeend",
+        `<option value="${i}">Page ${i}</option>`
+      );
+    }
+    //will show the options
+    selectPage.classList.remove("d-none");
+  } else {
+    //doesn't show the options
+    selectPage.classList.add("d-none");
   }
 }
 
+//removes the element that was created first
+function clearChildrenElement(element) {
+  while (element.firstElementChild) {
+    element.firstElementChild.remove();
+  }
+}
+
+async function getNavPage() {
+  let page = e.target.value;
+  // debugger;
+
+  //gets the data attribute that was set from the search input
+  const inputValue = selectPage.getAttribute("data-userInput");
+
+  let response = await axios.get(
+    "https://streaming-availability.p.rapidapi.com/search/ultra",
+    {
+      headers: {
+        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
+        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
+      },
+      params: {
+        country: "us",
+        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
+        type: "movie",
+        order_by: "imdb_vote_count",
+        year_min: "1900",
+        year_max: "2022",
+        //same variable as page ("above")
+        page,
+        // genres: "18,80",
+        // genres_relation: "or",
+        desc: "true",
+        // language: "en",
+        // min_imdb_rating: "70",
+        // max_imdb_rating: "90",
+        // min_imdb_vote_count: "10000",
+        // max_imdb_vote_count: "1000000",
+        keyword: `${inputValue}`,
+        // output_language: "en",
+      },
+    }
+  );
+
+  const dataKeyboard = response.data;
+  renderData(dataKeyboard.results);
+}
+
 function renderData(data) {
-  clearMovies();
   const cardContainer = document.getElementById("cardContainer");
+  clearChildrenElement(cardContainer);
   //if the search is empty, then alert the user
-  if (data.length === 0) {
+  if (data === null || data.length === 0) {
     cardContainer.innerHTML = `
     <small class="d-flex justify-content-center text-danger">
       Invalid. Please Try Again
@@ -155,13 +260,13 @@ function renderData(data) {
       //checks if the stream has a certain services.
 
       //TODO: implement other streams once we get the icons behind the card
-      if (stream.hasOwnProperty("netflix")) {
-        const netflix = stream.netflix.us.link;
-        movieCol.querySelector("#netflix").setAttribute("href", netflix);
-      } else if (stream.hasOwnProperty("hulu")) {
-        const hulu = stream.hulu.us.link;
-        movieCol.querySelector("#hulu").setAttribute("href", hulu);
-      }
+      // if (stream.hasOwnProperty("netflix")) {
+      //   const netflix = stream.netflix.us.link;
+      //   movieCol.querySelector("#netflix").setAttribute("href", netflix);
+      // } else if (stream.hasOwnProperty("hulu")) {
+      //   const hulu = stream.hulu.us.link;
+      //   movieCol.querySelector("#hulu").setAttribute("href", hulu);
+      // }
 
       //check if the movie has a poster image
       if (url.hasOwnProperty("original")) {
