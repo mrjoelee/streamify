@@ -58,7 +58,6 @@ function handleAddSubmitTitle(event) {
     .then(function (response) {
       const dataTitle = response.data;
       console.log(dataTitle);
-      console.log(dataTitle.total_page);
       //clear the movies that were added.
       renderData(dataTitle.result);
     })
@@ -244,11 +243,10 @@ function renderData(data) {
 
       favMovie.addEventListener("click", (e) => {
         e.preventDefault();
-        console.log(e);
+        e.stopPropagation();
         let btnId = parseInt(favMovie.getAttribute('data-id'));
-       
+
         if (btnId === movie.tmdbId) {
-          getFavorites();
           favorites.push(movie);
           localStorage.setItem('favorites', JSON.stringify(favorites));
         }
@@ -325,9 +323,15 @@ function backToTop() {
 
 function getFavorites() {
   let storedMovies = JSON.parse(localStorage.getItem('favorites'));
-  if (storedMovies.length > 0) {
+  console.log(storedMovies === null)
+  if (storedMovies !== null && storedMovies.length !== 0) {
     storedMovies.forEach(storedMovie => {
-       favorites.push(storedMovie);
-     });
-   }
+      favorites.push(storedMovie);
+    });
+  } else {
+    let emptyArray = [];
+    localStorage.setItem('favorites', JSON.stringify(emptyArray));
+  }
+
 }
+
