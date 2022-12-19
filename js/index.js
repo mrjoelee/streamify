@@ -57,17 +57,17 @@ function handleAddSubmitKeyboard(event) {
       services: "netflix,hulu,prime,disney,hbo,peacock,paramount,apple",
       type: "movie",
       order_by: "imdb_vote_count",
-      year_min: "2000",
-      year_max: "2020",
+      // year_min: "2000",
+      // year_max: "2020",
       page: "1",
       genres: "18,80",
       genres_relation: "or",
       desc: "true",
       language: "en",
-      min_imdb_rating: "70",
-      max_imdb_rating: "90",
-      min_imdb_vote_count: "10000",
-      max_imdb_vote_count: "1000000",
+      // min_imdb_rating: "70",
+      // max_imdb_rating: "90",
+      // min_imdb_vote_count: "10000",
+      // max_imdb_vote_count: "1000000",
       keyword: `${inputValue}`,
       output_language: "en",
     },
@@ -82,6 +82,7 @@ function handleAddSubmitKeyboard(event) {
     .then(function (response) {
       const dataKeyboard = response.data;
       console.log(dataKeyboard);
+      console.log(dataKeyboard.total_pages);
       //clear the movies that were added.
       renderData(dataKeyboard.results);
     })
@@ -108,8 +109,8 @@ function renderData(data) {
     </small>`;
   } else {
     data.forEach((movie) => {
-      const cardCol = document.createElement("div");
-      cardCol.classList.add(
+      const movieCol = document.createElement("div");
+      movieCol.classList.add(
         "col-lg-3",
         "col-md-4",
         "col-sm-6",
@@ -117,7 +118,7 @@ function renderData(data) {
         "justify-content-center",
         "mt-4"
       );
-      cardCol.innerHTML = `<div class="card">
+      movieCol.innerHTML = `<div class="card">
         <div class="card__inner">
           <div class="card__face card__face--front">
             <img class="card-img-top" /> 
@@ -126,7 +127,7 @@ function renderData(data) {
             <div class="card__content">
               <div class="card__header">
                 <h5 class="card-title"></h5>
-                <a  id="video" href="url"><i class="bi bi-youtube"></i></a> 
+                <a  target="_blank" id="video" href="#"><i class="bi bi-youtube"></i></a> 
               </div>
               <div class="card__body">
                 
@@ -140,39 +141,55 @@ function renderData(data) {
       `;
 
       //movie data for title = result and keyboard = results (variable that is getting from the api).
-      const url = movie.posterURLs.original;
+      // const url = movie.posterURLs.original;
+      const url = movie.posterURLs;
       const title = movie.title;
       const text = movie.overview;
       const stream = movie.streamingInfo;
-      const video = movie.video;
+      const video = movie;
+      const posterImage = movieCol.querySelector(".card-img-top");
 
       // object de-structuring
       // const {posterURLs: {original},title,overview,streamingInfo,video} = movie
 
       //checks if the stream has a certain services.
+
+      //TODO: implement other streams once we get the icons behind the card
       if (stream.hasOwnProperty("netflix")) {
         const netflix = stream.netflix.us.link;
-        cardCol.querySelector("#netflix").setAttribute("href", netflix);
+        movieCol.querySelector("#netflix").setAttribute("href", netflix);
       } else if (stream.hasOwnProperty("hulu")) {
         const hulu = stream.hulu.us.link;
-        cardCol.querySelector("#hulu").setAttribute("href", hulu);
+        movieCol.querySelector("#hulu").setAttribute("href", hulu);
       }
 
-      cardCol.querySelector(".card-title").textContent = title;
-      cardCol.querySelector(".card-text").textContent = text;
-      cardCol.querySelector(".card-img-top").setAttribute("src", url);
-      cardCol
-        .querySelector("#video")
-        .setAttribute("href", `https://www.youtube.com/embed/${video}`);
+      //check if the movie has a poster image
+      if (url.hasOwnProperty("original")) {
+        const posterOne = url.original;
+        movieCol.querySelector(".card-img-top").setAttribute("src", posterOne);
+      } else if (url.hasOwnProperty("500")) {
+        const posterTwo = url["500"];
+        posterImage.setAttribute("src", posterTwo);
+      }
 
-      cardContainer.append(cardCol);
+      //TODO: how to stop for movies with no youtube link to not refresh.
+      if (video.hasOwnProperty("youtubeTrailerVideoLink")) {
+        const youTube = video.youtubeTrailerVideoLink;
+        movieCol.querySelector("#video").setAttribute("href", youTube);
+      }
+
+      movieCol.querySelector(".card-title").textContent = title;
+      movieCol.querySelector(".card-text").textContent = text;
+
+      cardContainer.append(movieCol);
+
       //toggles the flip method
-      const flip = cardCol.querySelector(".card__inner");
+      const flip = movieCol.querySelector(".card__inner");
       flip.addEventListener("click", function (e) {
         flip.classList.toggle("is-flipped");
-        console.log(e.target);
+        // console.log(e.target);
       });
-      console.log(flip);
+      // console.log(flip);
     });
   }
 }
