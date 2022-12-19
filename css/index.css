@@ -163,6 +163,7 @@ body {
   overflow: hidden;
 }
 
+
 .card-title {
   display: inline;
   position: absolute;
@@ -175,8 +176,8 @@ body {
 }
 
 #video {
-  padding-left: 85%;
-  padding-bottom: 50%;
+  position: absolute;
+  left: 80%;
 }
 
 .card-text {

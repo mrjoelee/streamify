@@ -1,3 +1,7 @@
+"use strict";
+
+// const e = require("express");
+
 const streamImage = {
   prime: `<a class="stream_image" id="prime" title="Amazon, Public domain, via Wikimedia Commons" href="#"><img width="64" alt="Amazon Prime Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Amazon_Prime_Logo.svg/64px-Amazon_Prime_Logo.svg.png"></a>`,
   disney: `<a class="stream_image" id="disney" title="The Walt Disney Company, Public domain, via Wikimedia Commons" href="#"><img width="64" alt="Disney+ logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/512px-Disney%2B_logo.svg.png"></a>`,
@@ -5,8 +9,10 @@ const streamImage = {
   hbo: `<a title="Warner Bros. Discovery, Public domain, via Wikimedia Commons" href="#"><img width="64" alt="HBO Max Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/HBO_Max_Logo.svg/512px-HBO_Max_Logo.svg.png"></a>`,
   paromount: `<a title="Paramount Global, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Paramount%2B_logo.svg"><img width="64" alt="Paramount+ logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Paramount%2B_logo.svg/64px-Paramount%2B_logo.svg.png"></a>`,
   hulu: `<a title="The Walt Disney Company, NBCUniversal, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Hulu_Logo.svg"><img width="64" alt="Hulu Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hulu_Logo.svg/512px-Hulu_Logo.svg.png"></a>`,
-  youtube: `<a id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:YouTube_full-color_icon_(2017).svg"><img width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
+  youtube: `<a id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:YouTube_full-color_icon_(2017).svg" target="_blank"><img width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
 };
+
+const favorites = [];
 
 //Get by Title Movies
 document
@@ -52,7 +58,6 @@ function handleAddSubmitTitle(event) {
     .then(function (response) {
       const dataTitle = response.data;
       console.log(dataTitle);
-      console.log(dataTitle.total_page);
       //clear the movies that were added.
       renderData(dataTitle.result);
     })
@@ -155,25 +160,26 @@ function renderData(data) {
         "mt-4"
       );
       movieCol.innerHTML = `<div class="card">
-        <div class="card__inner">
-          <div class="card__face card__face--front">
-            <img class="card-img-top" /> 
+        <div class="card__inner" style="position: relative;">
+          <div class="card__face card__face--front" style="position: absolute;">
+            <img class="card-img-top"/> 
+            <button type="button" class="favorite btn btn-danger" style="position: absolute; top: 87%; left: 65%">Favorite</button>
           </div>
-          <div class="card__face card__face--back">
+          <div class="card__face card__face--back" style="position: absolute;">
             <div class="card__content">
               <div class="card__header">
                 <h5 class="card-title"></h5>
                 ${streamImage.youtube} 
               </div>
               <div class="card__body">
-        <p class="card-text"></p>
-        <div class="streams">
-        ${streamImage.hulu}
-        ${streamImage.prime}
-        ${streamImage.disney}
-        ${streamImage.netflix}
-        ${streamImage.hbo}
-        ${streamImage.paromount}
+                  <p class="card-text"></p>
+                  <div class="streams">
+                  ${streamImage.hulu}
+                  ${streamImage.prime}
+                  ${streamImage.disney}
+                  ${streamImage.netflix}
+                  ${streamImage.hbo}
+                  ${streamImage.paromount}
                 </div>
               </div>
             </div>
@@ -189,6 +195,7 @@ function renderData(data) {
       const text = movie.overview;
       const stream = movie.streamingInfo;
       const video = movie;
+      const movieId = movie.tmdbId;
       const posterImage = movieCol.querySelector(".card-img-top");
 
       // object de-structuring
@@ -222,7 +229,8 @@ function renderData(data) {
 
       movieCol.querySelector(".card-title").textContent = title;
       movieCol.querySelector(".card-text").textContent = text;
-
+      const favMovie = movieCol.querySelector(".favorite");
+      favMovie.setAttribute("data-id", `${movieId}`);
       cardContainer.append(movieCol);
 
       //toggles the flip method
@@ -232,6 +240,18 @@ function renderData(data) {
         // console.log(e.target);
       });
       // console.log(flip);
+
+      favMovie.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let btnId = parseInt(favMovie.getAttribute('data-id'));
+
+        if (btnId === movie.tmdbId) {
+          favorites.push(movie);
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+      });
+
     });
   }
 }
@@ -300,3 +320,18 @@ function backToTop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+function getFavorites() {
+  let storedMovies = JSON.parse(localStorage.getItem('favorites'));
+  console.log(storedMovies === null)
+  if (storedMovies !== null && storedMovies.length !== 0) {
+    storedMovies.forEach(storedMovie => {
+      favorites.push(storedMovie);
+    });
+  } else {
+    let emptyArray = [];
+    localStorage.setItem('favorites', JSON.stringify(emptyArray));
+  }
+
+}
+
