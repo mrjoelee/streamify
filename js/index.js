@@ -155,25 +155,26 @@ function renderData(data) {
         "mt-4"
       );
       movieCol.innerHTML = `<div class="card">
-        <div class="card__inner">
-          <div class="card__face card__face--front">
-            <img class="card-img-top" /> 
+        <div class="card__inner" style="position: relative;">
+          <div class="card__face card__face--front" style="position: absolute;">
+            <img class="card-img-top"/> 
+            <button type="button" class="favorite btn btn-danger" style="position: absolute; top: 87%; left: 65%">Favorite</button>
           </div>
-          <div class="card__face card__face--back">
+          <div class="card__face card__face--back" style="position: absolute;">
             <div class="card__content">
               <div class="card__header">
                 <h5 class="card-title"></h5>
                 ${streamImage.youtube} 
               </div>
               <div class="card__body">
-        <p class="card-text"></p>
-        <div class="streams">
-        ${streamImage.hulu}
-        ${streamImage.prime}
-        ${streamImage.disney}
-        ${streamImage.netflix}
-        ${streamImage.hbo}
-        ${streamImage.paromount}
+                  <p class="card-text"></p>
+                  <div class="streams">
+                  ${streamImage.hulu}
+                  ${streamImage.prime}
+                  ${streamImage.disney}
+                  ${streamImage.netflix}
+                  ${streamImage.hbo}
+                  ${streamImage.paromount}
                 </div>
               </div>
             </div>
