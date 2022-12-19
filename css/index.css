@@ -94,13 +94,14 @@ body {
 .card__content {
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .card__header {
   position: relative;
 }
 
-.card__header:after {
+/* .card__header:after {
   content: "";
   display: block;
   position: absolute;
@@ -115,9 +116,9 @@ body {
   );
   z-index: -1;
   border-radius: 0px 0px 50% 0px;
-}
+} */
 
-.pp {
+/* .pp {
   display: block;
   width: 128px;
   height: 128px;
@@ -126,7 +127,7 @@ body {
   background-color: #fff;
   border: 5px solid #fff;
   object-fit: cover;
-}
+} */
 
 .card__header h2 {
   color: #fff;
@@ -140,6 +141,10 @@ body {
   padding: 30px;
 }
 
+.streams {
+  position: absolute;
+}
+
 .card__body h3 {
   color: var(--dark);
   font-size: 24px;
@@ -151,7 +156,6 @@ body {
   /* color: var(--dark);
   font-size: 18px;
   line-height: 1.4; */
-  font-size: 1.5vmin;
 }
 
 .card-img-top {
@@ -160,6 +164,9 @@ body {
 
 .card-title {
   display: inline;
+  position: absolute;
+  left: 10%;
+  top: 50%;
 }
 
 .bi-youtube {
@@ -168,13 +175,26 @@ body {
 
 #video {
   padding-left: 85%;
+  padding-bottom: 50%;
 }
 
-/* .card-text { */
-/* font-size: smaller;
-  max-height: 10px; */
+.card-text {
+  /* position: absolute;
+  width: 592px;
+  height: 149.4px;
+  left: 158px;
+  top: 421.8px; */
 
-/* #youtube {
-  font-family: "Bootstrap-icons";
-  color: red;
-} */
+  font-family: "Imprima";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.3vmin;
+  color: #ffffff;
+}
+
+.stream_image {
+}
+.streams {
+  position: absolute;
+  top: 75%;
+}
