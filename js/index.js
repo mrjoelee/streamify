@@ -22,45 +22,7 @@ selectPage.addEventListener("change", displayNewPage);
 
 async function displayNewPage(e) {
   // console.log(e.target.value);
-
-  let page = e.target.value;
-  // debugger;
-
-  //gets the data attribute that was set from the search input
-  const inputValue = selectPage.getAttribute("data-userInput");
-
-  let response = await axios.get(
-    "https://streaming-availability.p.rapidapi.com/search/ultra",
-    {
-      headers: {
-        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
-        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-      },
-      params: {
-        country: "us",
-        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
-        type: "movie",
-        order_by: "imdb_vote_count",
-        year_min: "1900",
-        year_max: "2022",
-        //same variable as page ("above")
-        page,
-        // genres: "18,80",
-        // genres_relation: "or",
-        desc: "true",
-        // language: "en",
-        // min_imdb_rating: "70",
-        // max_imdb_rating: "90",
-        // min_imdb_vote_count: "10000",
-        // max_imdb_vote_count: "1000000",
-        keyword: `${inputValue}`,
-        // output_language: "en",
-      },
-    }
-  );
-
-  const dataKeyboard = response.data;
-  renderData(dataKeyboard.results);
+  getNavPage(e);
 }
 
 function handleAddSubmitTitle(event) {
@@ -172,47 +134,6 @@ function clearChildrenElement(element) {
   }
 }
 
-async function getNavPage() {
-  let page = e.target.value;
-  // debugger;
-
-  //gets the data attribute that was set from the search input
-  const inputValue = selectPage.getAttribute("data-userInput");
-
-  let response = await axios.get(
-    "https://streaming-availability.p.rapidapi.com/search/ultra",
-    {
-      headers: {
-        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
-        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-      },
-      params: {
-        country: "us",
-        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
-        type: "movie",
-        order_by: "imdb_vote_count",
-        year_min: "1900",
-        year_max: "2022",
-        //same variable as page ("above")
-        page,
-        // genres: "18,80",
-        // genres_relation: "or",
-        desc: "true",
-        // language: "en",
-        // min_imdb_rating: "70",
-        // max_imdb_rating: "90",
-        // min_imdb_vote_count: "10000",
-        // max_imdb_vote_count: "1000000",
-        keyword: `${inputValue}`,
-        // output_language: "en",
-      },
-    }
-  );
-
-  const dataKeyboard = response.data;
-  renderData(dataKeyboard.results);
-}
-
 function renderData(data) {
   const cardContainer = document.getElementById("cardContainer");
   clearChildrenElement(cardContainer);
@@ -314,6 +235,49 @@ function renderData(data) {
     });
   }
 }
+
+//pagination
+async function getNavPage(e) {
+  let page = e.target.value;
+  // debugger;
+
+  //gets the data attribute that was set from the search input
+  const inputValue = selectPage.getAttribute("data-userInput");
+
+  const response = await axios.get(
+    "https://streaming-availability.p.rapidapi.com/search/ultra",
+    {
+      headers: {
+        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
+        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
+      },
+      params: {
+        country: "us",
+        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
+        type: "movie",
+        order_by: "imdb_vote_count",
+        year_min: "1900",
+        year_max: "2022",
+        //same variable as page ("above")
+        page,
+        // genres: "18,80",
+        // genres_relation: "or",
+        desc: "true",
+        // language: "en",
+        // min_imdb_rating: "70",
+        // max_imdb_rating: "90",
+        // min_imdb_vote_count: "10000",
+        // max_imdb_vote_count: "1000000",
+        keyword: `${inputValue}`,
+        // output_language: "en",
+      },
+    }
+  );
+
+  const dataKeyboard = response.data;
+  renderData(dataKeyboard.results);
+}
+
 //Get the button
 let upBtn = document.getElementById("upBtn");
 
