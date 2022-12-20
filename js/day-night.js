@@ -41,7 +41,16 @@ darkMode.addEventListener("click", () => {
     )
     .add(
       {
-        targets: ["nav", "section", ".navbar-brand", ".card", "h2", ".icong"],
+        targets: [
+          "nav",
+          "section",
+          ".navbar-brand",
+          ".card",
+          "h2",
+          ".icong",
+          ".card-title",
+          ".card-text",
+        ],
         backgroundColor: toggle ? "rgb(108, 117, 125)" : "rgb(108, 117, 125)",
         color: toggle ? "rgb(255,255,255)" : "rgb(22,22,22)",
       },
@@ -49,7 +58,7 @@ darkMode.addEventListener("click", () => {
     )
     .add(
       {
-        targets: [".card-link", "h5", "#profileCard"],
+        targets: [".card-link", ".text-md-center", "#profileCard"],
         backgroundColor: toggle ? "rgb(255,255,255)" : "rgb(22,22,22)",
         color: toggle ? "rgb(22,22,22)" : "rgb(255,255,255)",
       },
