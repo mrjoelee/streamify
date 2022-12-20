@@ -31,39 +31,33 @@ async function displayNewPage(e) {
   getNavPage(e);
 }
 
-function handleAddSubmitTitle(event) {
+async function handleAddSubmitTitle(event) {
   event.preventDefault();
 
   const inputTitle = document.getElementById("title-input").value;
   //clears the forms after it hit searches
   document.getElementById("search-title").reset();
-  const optionsTitle = {
-    method: "GET",
-    url: "https://streaming-availability.p.rapidapi.com/v2/search/title",
-    params: {
-      title: `${inputTitle}`,
-      country: "us",
-      type: "all",
-      output_language: "en",
-      pages: "all",
-    },
-    headers: {
-      "X-RapidAPI-Key": "e3e6e19587msh1f7d7623b368827p128deajsn6a511e58e6a7",
-      "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-    },
-  };
+  const response = await axios.get(
+    "https://streaming-availability.p.rapidapi.com/v2/search/title",
+    {
+      headers: {
+        "X-RapidAPI-Key": "e3e6e19587msh1f7d7623b368827p128deajsn6a511e58e6a7",
+        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
+      },
+      params: {
+        title: `${inputTitle}`,
+        country: "us",
+        type: "all",
+        output_language: "en",
+        pages: "all",
+      },
+    }
+  );
 
-  axios
-    .request(optionsTitle)
-    .then(function (response) {
-      const dataTitle = response.data;
-      console.log(dataTitle);
-      //clear the movies that were added.
-      renderData(dataTitle.result);
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+  const dataTitle = response.data;
+  console.log(dataTitle);
+  //clear the movies that were added.
+  renderData(dataTitle.result);
 }
 
 //Search input by keyboard
@@ -244,14 +238,13 @@ function renderData(data) {
       favMovie.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        let btnId = parseInt(favMovie.getAttribute('data-id'));
+        let btnId = parseInt(favMovie.getAttribute("data-id"));
 
         if (btnId === movie.tmdbId) {
           favorites.push(movie);
-          localStorage.setItem('favorites', JSON.stringify(favorites));
+          localStorage.setItem("favorites", JSON.stringify(favorites));
         }
       });
-
     });
   }
 }
@@ -322,16 +315,14 @@ function backToTop() {
 }
 
 function getFavorites() {
-  let storedMovies = JSON.parse(localStorage.getItem('favorites'));
-  console.log(storedMovies === null)
+  let storedMovies = JSON.parse(localStorage.getItem("favorites"));
+  console.log(storedMovies === null);
   if (storedMovies !== null && storedMovies.length !== 0) {
-    storedMovies.forEach(storedMovie => {
+    storedMovies.forEach((storedMovie) => {
       favorites.push(storedMovie);
     });
   } else {
     let emptyArray = [];
-    localStorage.setItem('favorites', JSON.stringify(emptyArray));
+    localStorage.setItem("favorites", JSON.stringify(emptyArray));
   }
-
 }
-
