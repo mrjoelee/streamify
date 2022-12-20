@@ -35,9 +35,9 @@
       <!-- place navbar here -->
       <!-- <div class="container"> -->
       <nav class="navbar navbar-dark bg-secondary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-            Streamify
+        <div class="container-fluid d-flex">
+          <div>
+            <a class="navbar-brand" href="#"> Streamify</a>
             <sup>
               <!-- Light/Dark Theme Toggler -->
               <section>
@@ -58,8 +58,12 @@
                 </svg>
               </section>
             </sup>
-          </a>
-          <a class="navbar-brand" href="./favorites.html">Favorites</a>
+          </div>
+
+          <div>
+            <a class="navbar-brand" href="./about.html">About</a>
+            <a class="navbar-brand" href="./favorites.html">Favorites</a>
+          </div>
         </div>
       </nav>
       <!-- </div> -->
@@ -102,6 +106,7 @@
               id="title"
               name="title"
               type="submit"
+              required
             >
               Search
             </button>

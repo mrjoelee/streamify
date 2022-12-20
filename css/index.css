@@ -13,21 +13,41 @@
   /* background-color: grey;
   border-color: black; */
 }
-nav {
+/* nav {
   background-color: #6c757d;
   color: white;
-}
+} */
 
 .navbar-brand {
-  color: rgb(255, 255, 255);
+  color: white;
   font-size: 24pt;
+  background-color: #6c757d;
+}
+
+/* about  page */
+#develop-by {
+  height: 5rem;
+}
+
+h2 {
+  color: white;
+  font-size: 24pt;
+  /* background-color: #6c757d; */
+}
+h5 {
+  color: black;
+}
+
+/* profile Card */
+#profileCard {
+  background-color: white;
 }
 
 section {
   width: min-content;
-  background: rgb(255, 255, 255);
+  background: #6c757d;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   display: inline-block;
@@ -42,9 +62,9 @@ body {
   font-family: Nunito;
   font-size: 1.2rem;
 }
-======= body {
+/* ======= body {
   background-color: black;
-}
+} */
 
 .card {
   /* margin: 100px auto 0; */
@@ -162,7 +182,6 @@ body {
 .card-img-top {
   overflow: hidden;
 }
-
 
 .card-title {
   display: inline;
