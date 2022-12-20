@@ -1,5 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito&display=swap");
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 26px;
+  border-radius: 13px;
+  background-clip: padding-box;
+  border: 10px solid transparent;
+}
 
+*::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 0 10px;
+}
 * {
   margin: 0;
   padding: 0;
@@ -13,21 +23,41 @@
   /* background-color: grey;
   border-color: black; */
 }
-nav {
+/* nav {
   background-color: #6c757d;
   color: white;
-}
+} */
 
 .navbar-brand {
-  color: rgb(255, 255, 255);
+  color: white;
   font-size: 24pt;
+  background-color: #6c757d;
+}
+
+/* about  page */
+#develop-by {
+  height: 5rem;
+}
+
+h2 {
+  color: white;
+  font-size: 24pt;
+  /* background-color: #6c757d; */
+}
+h5 {
+  color: black;
+}
+
+/* profile Card */
+#profileCard {
+  background-color: white;
 }
 
 section {
   width: min-content;
-  background: rgb(255, 255, 255);
+  background: #6c757d;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   display: inline-block;
@@ -42,16 +72,16 @@ body {
   font-family: Nunito;
   font-size: 1.2rem;
 }
-======= body {
+/* ======= body {
   background-color: black;
-}
+} */
 
 .card {
   /* margin: 100px auto 0; */
   width: 280px;
   height: 400px;
   perspective: 1000px;
-  background-color: rgb(60, 58, 58);
+  background-color: rgb(106, 94, 94);
 }
 
 .card__inner {
@@ -130,45 +160,23 @@ body {
   object-fit: cover;
 } */
 
-.card__header h2 {
-  color: #fff;
-  font-size: 32px;
-  font-weight: 900;
-  text-transform: uppercase;
-  text-align: center;
-}
-
 .card__body {
-  padding: 30px;
-}
-
-.streams {
-  position: absolute;
-}
-
-.card__body h3 {
-  color: var(--dark);
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-.card__body p {
-  /* color: var(--dark);
-  font-size: 18px;
-  line-height: 1.4; */
+  padding: 15px;
 }
 
 .card-img-top {
   overflow: hidden;
 }
 
-
 .card-title {
+  font-family: "GowunDodum", serif;
   display: inline;
   position: absolute;
-  left: 10%;
+  margin-top: 15px;
+  margin-left: 15px;
   top: 50%;
+  color: #ffffff;
+  font-size: 1.17em;
 }
 
 .bi-youtube {
@@ -176,29 +184,34 @@ body {
 }
 
 #video {
-  position: absolute;
-  left: 80%;
+  padding-left: 85%;
+  padding-top: 100px;
 }
 
 .card-text {
-  /* position: absolute;
-  width: 592px;
-  height: 149.4px;
-  left: 158px;
-  top: 421.8px; */
-
-  font-family: "Imprima";
+  font-family: "GowunDodum", serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 1.3vmin;
+  font-size: 0.7em;
   color: #ffffff;
 }
 
-.stream_image {
+.card-desc {
+  /* border: 1px solid black; */
+  margin-top: 25%;
+  height: 13vh;
+  resize: none;
+  overflow-wrap: break-word;
+  word-wrap: none;
+  overflow: auto;
 }
 .streams {
   position: absolute;
   top: 75%;
+}
+
+.stream_image {
+  margin-left: 10px;
 }
 
 svg {
