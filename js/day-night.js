@@ -50,6 +50,7 @@ darkMode.addEventListener("click", () => {
           ".icong",
           ".card-title",
           ".card-text",
+          ".movie-info",
         ],
         backgroundColor: toggle ? "rgb(108, 117, 125)" : "rgb(108, 117, 125)",
         color: toggle ? "rgb(255,255,255)" : "rgb(22,22,22)",
