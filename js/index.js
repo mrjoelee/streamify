@@ -108,7 +108,7 @@ async function handleAddSubmitKeyboard(event) {
   totalPages = dataKeyboard.total_pages;
   setTimeout(function () {
     renderData(dataKeyboard.results);
-  }, 2000);
+  }, 500);
 
   //maintains the input search since it clears the input after the search is submit
   selectPage.setAttribute("data-userInput", inputValue);
