@@ -2,14 +2,45 @@
 
 // const e = require("express");
 
+const genreList = {
+  1: "Biography",
+  2: "Film Noir",
+  3: "Game Show",
+  4: "Musical",
+  5: "Sport",
+  6: "Short",
+  7: "Adult",
+  12: "Adventure",
+  14: "Fantasy",
+  16: "Animation",
+  18: "Drama",
+  27: "Horror",
+  28: "Action",
+  35: "Comedy",
+  36: "History",
+  37: "Western",
+  53: "Thriller",
+  80: "Crime",
+  99: "Documentary",
+  878: "Science Fiction",
+  9648: "Mystery",
+  10402: "Music",
+  10749: "Romance",
+  10751: "Family",
+  10752: "War",
+  10763: "News",
+  10764: "Reality",
+  10767: "Talk Show",
+};
+
 const streamImage = {
-  prime: `<a target="_blank" class="stream_image" id="prime" title="Amazon, Public domain, via Wikimedia Commons" href="#"><img width="45" alt="Amazon Prime Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Amazon_Prime_Logo.svg/64px-Amazon_Prime_Logo.svg.png"></a>`,
+  prime: `<a target="_blank" class="stream_image" id="prime" title="Amazon, Public domain, via Wikimedia Commons" href="#"><img width="45" alt="Amazon Prime Video logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Amazon_Prime_Video_logo.svg/512px-Amazon_Prime_Video_logo.svg.png"></a>`,
   disney: `<a target="_blank" class="stream_image" id="disney" title="The Walt Disney Company, Public domain, via Wikimedia Commons" href="#"><img width="55" alt="Disney+ logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Disney%2B_logo.svg/512px-Disney%2B_logo.svg.png"></a>`,
   netflix: `<a target="_blank" class="stream_image" id="netflix" title="Netflix, Public domain, via Wikimedia Commons" href="#"><img width="55" alt="Netflix logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Netflix_logo.svg/512px-Netflix_logo.svg.png"></a>`,
   hbo: `<a target="_blank" class="stream_image" id="hbo" title="Warner Bros. Discovery, Public domain, via Wikimedia Commons" href="#"><img width="55" alt="HBO Max Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/HBO_Max_Logo.svg/512px-HBO_Max_Logo.svg.png"></a>`,
   paramount: `<a target="_blank" class="stream_image" id="paramount" a title="Paramount Global, Public domain, via Wikimedia Commons" href="#"><img width="70" alt="Paramount+ logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Paramount%2B_logo.svg/64px-Paramount%2B_logo.svg.png"></a>`,
   hulu: `<a target="_blank" class="stream_image" id="hulu" a title="The Walt Disney Company, NBCUniversal, Public domain, via Wikimedia Commons" href="#"><img width="55" alt="Hulu Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hulu_Logo.svg/512px-Hulu_Logo.svg.png"></a>`,
-  youtube: `<a target="_blank" id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="#"><img width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
+  youtube: `<a target="_blank" id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="#"><img id= "youtube" width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
 };
 
 let favorites = [];
@@ -169,34 +200,44 @@ function renderData(data) {
                   <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.175.98 1.763 1.12 1.763s.278-.588 1.11-1.766a4.17 4.17 0 0 1 3.679-1.938m0-2a6.04 6.04 0 0 0-4.797 2.127 6.052 6.052 0 0 0-4.787-2.127A6.985 6.985 0 0 0 .5 9.122c0 3.61 2.55 5.827 5.015 7.97.283.246.569.494.853.747l1.027.918a44.998 44.998 0 0 0 3.518 3.018 2 2 0 0 0 2.174 0 45.263 45.263 0 0 0 3.626-3.115l.922-.824c.293-.26.59-.519.885-.774 2.334-2.025 4.98-4.32 4.98-7.94a6.985 6.985 0 0 0-6.708-7.218Z">
                   </path>
                 </svg>
-            </button>
+                </button>
+                </div>
+                <div class="card__face card__face--back" style="position: absolute;"> 
+                  <div class="card__content">
+                  <div class="card__header">
+                  <h5 class="card-title"></h5>
+                  ${streamImage.youtube} 
+                </div>
+                <div class="card__body">
+                <div class="card-desc">
+          <p class="card-text"></p>
           </div>
-          <div class="card__face card__face--back" style="position: absolute;">
-            <div class="card__content">
-            <div class="card__header">
-            <h5 class="card-title"></h5>
-            ${streamImage.youtube} 
+          <div class="movie-info">
+          <p id="director"></p>
+          <p id="starring"></p>
+          <p id="genre">Genres: Drama,Action</p>
           </div>
-          <div class="card__body">
-          <div class="card-desc">
-    <p class="card-text"></p>
-    </div>
-    <div class="streams">
-    
+          <div class="streams">
+          
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  `;
+        `;
 
       //movie data for title = result and keyboard = results (variable that is getting from the api).
       // const url = movie.posterURLs.original;
       const url = movie.posterURLs;
+      const cast = movie.cast;
+      const director = movie.significants;
+      const directorT = movie.directors;
+      const genre = movie.genres;
       const title = movie.title;
       const text = movie.overview;
       const stream = movie.streamingInfo;
+      const streams = movie.streamingInfo.us;
       const video = movie;
       const movieId = movie.tmdbId;
       const posterImage = movieCol.querySelector(".card-img-top");
@@ -207,7 +248,8 @@ function renderData(data) {
 
       //checks if the stream has a certain services.
 
-      // TODO: implement other streams once we get the icons behind the card
+      // adding stream icons to card * keyword search
+
       if (stream.hasOwnProperty("netflix")) {
         const netflix = stream.netflix.us.link;
         streamDiv.innerHTML += `${streamImage.netflix}`;
@@ -239,6 +281,39 @@ function renderData(data) {
         movieCol.querySelector("#hulu").setAttribute("href", hulu);
       }
 
+      // adding stream icons to card * title search
+
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("netflix")) {
+        const netflixT = streams.netflix[0].link;
+        streamDiv.innerHTML += `${streamImage.netflix}`;
+        movieCol.querySelector("#netflix").setAttribute("href", netflixT);
+      }
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("prime")) {
+        const primeT = stream.us.prime[0].link;
+        streamDiv.innerHTML += `${streamImage.prime}`;
+        movieCol.querySelector("#prime").setAttribute("href", primeT);
+      }
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("disney")) {
+        const disneyT = stream.us.disney[0].link;
+        streamDiv.innerHTML += `${streamImage.disney}`;
+        movieCol.querySelector("#disney").setAttribute("href", disneyT);
+      }
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("hbo")) {
+        const hboT = stream.us.hbo[0].link;
+        streamDiv.innerHTML += `${streamImage.hbo}`;
+        movieCol.querySelector("#hbo").setAttribute("href", hboT);
+      }
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("paramount")) {
+        const paramountT = stream.us.paramount[0].link;
+        streamDiv.innerHTML += `${streamImage.paramount}`;
+        movieCol.querySelector("#paramount").setAttribute("href", paramountT);
+      }
+      if (stream.hasOwnProperty("us") && streams.hasOwnProperty("hulu")) {
+        const huluT = stream.us.hulu[0].link;
+        streamDiv.innerHTML += `${streamImage.hulu}`;
+        movieCol.querySelector("#hulu").setAttribute("href", huluT);
+      }
+
       //check if the movie has a poster image
       if (url.hasOwnProperty("original")) {
         const posterOne = url.original;
@@ -252,10 +327,35 @@ function renderData(data) {
       if (video.hasOwnProperty("youtubeTrailerVideoLink")) {
         const youTube = video.youtubeTrailerVideoLink;
         movieCol.querySelector("#video").setAttribute("href", youTube);
+      } else if (video.hasOwnProperty("video")) {
+        const keyWordYouTube = `https://www.youtube.com/watch?v=${video.video}`;
+        movieCol.querySelector("#video").setAttribute("href", keyWordYouTube);
       }
 
       movieCol.querySelector(".card-title").textContent = title;
       movieCol.querySelector(".card-text").textContent = text;
+      if (movie.hasOwnProperty("directors")) {
+        movieCol.querySelector(
+          "#director"
+        ).textContent = `Director: ${directorT}`;
+      }
+      if (movie.hasOwnProperty("significants")) {
+        movieCol.querySelector(
+          "#director"
+        ).textContent = `Director: ${director}`;
+      }
+      movieCol.querySelector("#starring").textContent = `Starring: ${cast}`;
+      if (genre.length >= 3) {
+        movieCol.querySelector(
+          "#genre"
+        ).textContent = `Genre: ${genre[0].name},${genre[1].name},${genre[2].name}`;
+      }
+      if (!genre[0].hasOwnProperty("id") && genre.length >= 3) {
+        movieCol.querySelector("#genre").textContent = `Genre: ${
+          genreList[genre[0]]
+        },${genreList[genre[1]]},${genreList[genre[2]]}`;
+      }
+
       const favMovie = movieCol.querySelector("[button-id]");
       cardContainer.append(movieCol);
 
