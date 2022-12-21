@@ -32,8 +32,9 @@ async function displayNewPage(e) {
 }
 
 async function handleAddSubmitTitle(event) {
-  event.preventDefault();
   showTime();
+  event.preventDefault();
+
   const inputTitle = document.getElementById("title-input").value;
   //clears the forms after it hit searches
   document.getElementById("search-title").reset();
@@ -57,14 +58,16 @@ async function handleAddSubmitTitle(event) {
   const dataTitle = response.data;
   console.log(dataTitle);
   //clear the movies that were added.
-  renderData(dataTitle.result);
+  setTimeout(function () {
+    renderData(dataTitle.result);
+  }, 3000);
 }
 
 //Search input by keyboard
 
 async function handleAddSubmitKeyboard(event) {
-  event.preventDefault();
   showTime();
+  event.preventDefault();
   const inputValue = document.getElementById("keyboard-input").value;
   //clears the forms after it hit searches
   document.getElementById("search-keyboard").reset();
@@ -103,7 +106,9 @@ async function handleAddSubmitKeyboard(event) {
 
   const dataKeyboard = response.data;
   totalPages = dataKeyboard.total_pages;
-  renderData(dataKeyboard.results);
+  setTimeout(function () {
+    renderData(dataKeyboard.results);
+  }, 2000);
 
   //maintains the input search since it clears the input after the search is submit
   selectPage.setAttribute("data-userInput", inputValue);
