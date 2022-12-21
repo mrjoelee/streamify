@@ -107,7 +107,7 @@
           <div style="width: 15%;">
             <select id="search-params" class="form-control" aria-label=".form-select-lg example">
               <option value="title">Title</option>
-              <option value="genre">Genre</option>
+              <option id="genre-option" value="genre">Genre</option>
               <option value="keyword">Keyword</option>
             </select>
           </div>
@@ -116,9 +116,11 @@
             <div class="dropdown">
               <input id="title-input" class="form-control me-2 dropdown dropdown-toggle" data-bs-toggle="dropdown"
                 type="search" aria-label="Search" required>
-              <ul id="genre-list" class="dropdown-menu" style="font-size: 16pt;">
-    
-              </ul>
+              <div>
+                <ul id="genre-list" class="dropdown-menu" style="font-size: 16pt;">
+                 
+                </ul>
+              </div>
             </div>
             <button class="btn" id="search-title" name="title" type="submit"><i class="fa fa-search"></i></button>
           </div>

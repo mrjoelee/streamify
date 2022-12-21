@@ -12,12 +12,29 @@ const streamImage = {
   youtube: `<a target="_blank" id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="#"><img width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
 };
 
+const genreArray = [
+  {genre: "action", code: "28"},
+  {genre: "adventure", code: "12"}, 
+  {genre: "animation", code: "16"},
+  {genre: "biography", code: "1"},
+  {genre: "comedy", code: "35"},
+  {genre: "crime", code: "80"},   
+  {genre: "documentary", code: "99"},
+  {genre: "drama", code: "18"},
+  {genre: "family", code: "10751"},
+  {genre: "fantasy", code: "14"},
+  {genre: "horror", code: "27"},
+  {genre: "musical", code: "4"},
+  {genre: "mystery", code: "9648"},
+  {genre: "romance", code: "10749"},
+  {genre: "science fiction", code: "878"},
+  {genre: "sports", code: "5"},
+  {genre: "thriller", code: "53"},
+  {genre: "war", code: "10752"}
+];
+
 const favorites = [];
 
-//Get by Title Movies
-// document
-//   .getElementById("search-title")
-//   .addEventListener("submit", handleAddSubmitTitle);
 document.querySelector("#search-title").addEventListener('submit', e => {
   e.preventDefault();
   const selection = document.querySelector('#search-params').selectedIndex;
@@ -31,33 +48,16 @@ document.querySelector("#search-title").addEventListener('submit', e => {
     document
       .getElementById("search-title")
       .addEventListener("submit", handleAddSubmitTitle);
+
   } else if (selection === genre) {
-    // let genreCode = document.querySelector('#title-input').value;
-    // const options = {
-    //   method: 'GET',
-    //   headers: {
-    //     'X-RapidAPI-Key': '56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d',
-    //     'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
-    //   }
-    // };
-    
-    // fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${genreCode}&page=1&output_language=en&language=en`, options)
-    //   .then(response => response.json())
-    //   .then(response => console.log(response))
-    //   .catch(err => console.error(err));
     document
     .getElementById("search-title")
     .addEventListener("submit", handleAddSubmitKeyboard);
-    console.log('Search by genre was selected');
   } else {
 
     console.log(`Search by keyword(${keyword}) was selected`);
   }
 })
-
-// document
-//   .getElementById("search-keyboard")
-//   .addEventListener("submit", handleAddSubmitKeyboard);
 
 const selectPage = document.getElementById("navPage");
 selectPage.addEventListener("change", displayNewPage);
@@ -70,7 +70,7 @@ async function displayNewPage(e) {
 async function handleAddSubmitTitle(event) {
   event.preventDefault();
   showTime();
-  const inputTitle = document.getElementById("title-input").value;
+  const inputTitle = document.getElementById("title-input").val;
   //clears the forms after it hit searches
   document.getElementById("search-title").reset();
   const response = await axios.get(
@@ -100,53 +100,10 @@ async function handleAddSubmitTitle(event) {
 
 async function handleAddSubmitKeyboard(event) {
   showTime();
-  const inputValue = document.getElementById("title-input").value;
+  const genreValue = document.getElementById("title-input").getAttribute('data-id');
   let totalPages = 0;
   let page = 1;
 
-  
-const genreArray = [
-  {genre: "action", code: "28"},
-  {genre: "adventure", code: "12"}, 
-  {genre: "animation", code: "16"},
-  {genre: "biography", code: "1"},
-  {genre: "comedy", code: "35"},
-  {genre: "crime", code: "80"},   
-  {genre: "documentary", code: "99"},
-  {genre: "drama", code: "18"},
-  {genre: "family", code: "10751"},
-  {genre: "fantasy", code: "14"},
-  {genre: "horror", code: "27"},
-  {genre: "musical", code: "4"},
-  {genre: "mystery", code: "9648"},
-  {genre: "romance", code: "10749"},
-  {genre: "science fiction", code: "878"},
-  {genre: "sports", code: "5"},
-  {genre: "thriller", code: "53"},
-  {genre: "war", code: "10752"}
-];
-
-
-
-document.getElementById("title-input").addEventListener('input', e => {
-  let genreContainer = document.getElementById("genre-list");
-
-  genreContainer.innerHTML = ""; 
-  for(i = 0; i < genreArray.length; i++) {
-      if(genreArray[i].genre.includes(e.target.value.toLowerCase()) && e.target.value !== ""){
-          let newSite =  `<li class="list-group-item" value="${genreArray[i].code}">${genreArray[i].genre}</li>`
-          genreContainer.insertAdjacentHTML("beforeend", newSite);
-      }
-  }
-  document.querySelector('li.list-group-item').addEventListener('click', e => {
-      e.preventDefault();
-      
-      let value = e.target.value;
-      console.log(value);
-      document.querySelector('#search-field').setAttribute('value', value);
-  });
-})
- 
   const options = {
     method: 'GET',
     headers: {
@@ -155,16 +112,16 @@ document.getElementById("title-input").addEventListener('input', e => {
     }
   };
   
-  fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${inputValue}&page=1&output_language=en&language=en`, options)
+  fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${genreValue}&page=1&output_language=en&language=en`, options)
     .then(response => response.json())
     .then(response => {
       totalPages = response.total_pages;
       renderData(response.results);
-      console.log(response.total_pages)
+      console.log(response.total_pages);
     }).catch(err => console.error(err));
 
   //maintains the input search since it clears the input after the search is submit
-  selectPage.setAttribute("data-userInput", inputValue);
+  selectPage.setAttribute("data-userInput", genreValue);
 
   //will remove pages from new search that have multiple pages
   clearChildrenElement(selectPage);
@@ -235,7 +192,7 @@ function renderData(data) {
     <p class="card-text"></p>
     </div>
     <div class="streams">
-    
+
             </div>
           </div>
         </div>
@@ -437,31 +394,31 @@ function deleteCurtain() {
   }, 5000);
 }
 
+// listens to search input field and makes suggestions
+document.getElementById("title-input").addEventListener('input', e => {
+  let genreContainer = document.querySelector("#genre-list");
+  
+  genreContainer.innerHTML = ""; 
+  for(let i = 0; i < genreArray.length; i++) {
+      if(genreArray[i].genre.includes(e.target.value.toLowerCase()) && e.target.value !== ""){
+          let genreItem =  `
+          
+            <li class="list-group-item" value="${genreArray[i].code}">${genreArray[i].genre}</li>
+          `;
+          genreContainer.insertAdjacentHTML("beforeend", genreItem);
+      }
+   
+  }
+  document.querySelectorAll('.list-group-item').forEach(element => {
+    element.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+    
+      let value = element.value;
+      document.querySelector('#title-input').value = element.innerText;
+      document.querySelector('#title-input').setAttribute('data-id', value);
+  
+  });
+})
 
-// ['click', 'enter'].forEach(evt =>
-
-//   document.querySelector("#search-title").addEventListener(
-//     (evt, e => { e.preventDefault(); }), handleAddSubmitTitle,
-//     false));
-
-// document.querySelector("#search-title").addEventListener('click', e => {
-//   e.preventDefault();
-//   const selection = document.querySelector('#search-params').selectedIndex;
-
-//   const title = 0;
-//   const genre = 1;
-//   const keyword = 2;
-
-//   if (selection === title) {
-//     console.log('Search by title was selected');
-//     document
-//       .getElementById("search-title")
-//       .addEventListener("submit", handleAddSubmitTitle);
-//   } else if (selection === genre) {
-//     console.log('Search by genre was selected');
-//   } else {
-//     console.log(`Search by keyword(${keyword}) was selected`);
-//   }
-// })
-
-
+});
