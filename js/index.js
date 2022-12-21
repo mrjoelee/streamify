@@ -15,13 +15,49 @@ const streamImage = {
 const favorites = [];
 
 //Get by Title Movies
-document
-  .getElementById("search-title")
-  .addEventListener("submit", handleAddSubmitTitle);
+// document
+//   .getElementById("search-title")
+//   .addEventListener("submit", handleAddSubmitTitle);
+document.querySelector("#search-title").addEventListener('submit', e => {
+  e.preventDefault();
+  const selection = document.querySelector('#search-params').selectedIndex;
 
-document
-  .getElementById("search-keyboard")
-  .addEventListener("submit", handleAddSubmitKeyboard);
+  const title = 0;
+  const genre = 1;
+  const keyword = 2;
+
+  if (selection === title) {
+    console.log('Search by title was selected');
+    document
+      .getElementById("search-title")
+      .addEventListener("submit", handleAddSubmitTitle);
+  } else if (selection === genre) {
+    // let genreCode = document.querySelector('#title-input').value;
+    // const options = {
+    //   method: 'GET',
+    //   headers: {
+    //     'X-RapidAPI-Key': '56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d',
+    //     'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
+    //   }
+    // };
+    
+    // fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${genreCode}&page=1&output_language=en&language=en`, options)
+    //   .then(response => response.json())
+    //   .then(response => console.log(response))
+    //   .catch(err => console.error(err));
+    document
+    .getElementById("search-title")
+    .addEventListener("submit", handleAddSubmitKeyboard);
+    console.log('Search by genre was selected');
+  } else {
+
+    console.log(`Search by keyword(${keyword}) was selected`);
+  }
+})
+
+// document
+//   .getElementById("search-keyboard")
+//   .addEventListener("submit", handleAddSubmitKeyboard);
 
 const selectPage = document.getElementById("navPage");
 selectPage.addEventListener("change", displayNewPage);
@@ -63,47 +99,69 @@ async function handleAddSubmitTitle(event) {
 //Search input by keyboard
 
 async function handleAddSubmitKeyboard(event) {
-  event.preventDefault();
   showTime();
-  const inputValue = document.getElementById("keyboard-input").value;
-  //clears the forms after it hit searches
-  document.getElementById("search-keyboard").reset();
-
+  const inputValue = document.getElementById("title-input").value;
   let totalPages = 0;
   let page = 1;
-  // debugger;
-  let response = await axios.get(
-    "https://streaming-availability.p.rapidapi.com/search/ultra",
-    {
-      headers: {
-        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
-        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-      },
-      params: {
-        country: "us",
-        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
-        type: "movie",
-        order_by: "imdb_vote_count",
-        year_min: "1900",
-        year_max: "2022",
-        page: "1",
-        // genres: "18,80",
-        // genres_relation: "or",
-        desc: "true",
-        // language: "en",
-        // min_imdb_rating: "70",
-        // max_imdb_rating: "90",
-        // min_imdb_vote_count: "10000",
-        // max_imdb_vote_count: "1000000",
-        keyword: `${inputValue}`,
-        // output_language: "en",
-      },
-    }
-  );
 
-  const dataKeyboard = response.data;
-  totalPages = dataKeyboard.total_pages;
-  renderData(dataKeyboard.results);
+  
+const genreArray = [
+  {genre: "action", code: "28"},
+  {genre: "adventure", code: "12"}, 
+  {genre: "animation", code: "16"},
+  {genre: "biography", code: "1"},
+  {genre: "comedy", code: "35"},
+  {genre: "crime", code: "80"},   
+  {genre: "documentary", code: "99"},
+  {genre: "drama", code: "18"},
+  {genre: "family", code: "10751"},
+  {genre: "fantasy", code: "14"},
+  {genre: "horror", code: "27"},
+  {genre: "musical", code: "4"},
+  {genre: "mystery", code: "9648"},
+  {genre: "romance", code: "10749"},
+  {genre: "science fiction", code: "878"},
+  {genre: "sports", code: "5"},
+  {genre: "thriller", code: "53"},
+  {genre: "war", code: "10752"}
+];
+
+
+
+document.getElementById("title-input").addEventListener('input', e => {
+  let genreContainer = document.getElementById("genre-list");
+
+  genreContainer.innerHTML = ""; 
+  for(i = 0; i < genreArray.length; i++) {
+      if(genreArray[i].genre.includes(e.target.value.toLowerCase()) && e.target.value !== ""){
+          let newSite =  `<li class="list-group-item" value="${genreArray[i].code}">${genreArray[i].genre}</li>`
+          genreContainer.insertAdjacentHTML("beforeend", newSite);
+      }
+  }
+  document.querySelector('li.list-group-item').addEventListener('click', e => {
+      e.preventDefault();
+      
+      let value = e.target.value;
+      console.log(value);
+      document.querySelector('#search-field').setAttribute('value', value);
+  });
+})
+ 
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': '56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d',
+      'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
+    }
+  };
+  
+  fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${inputValue}&page=1&output_language=en&language=en`, options)
+    .then(response => response.json())
+    .then(response => {
+      totalPages = response.total_pages;
+      renderData(response.results);
+      console.log(response.total_pages)
+    }).catch(err => console.error(err));
 
   //maintains the input search since it clears the input after the search is submit
   selectPage.setAttribute("data-userInput", inputValue);
@@ -378,3 +436,32 @@ function deleteCurtain() {
     clearChildrenElement(scene);
   }, 5000);
 }
+
+
+// ['click', 'enter'].forEach(evt =>
+
+//   document.querySelector("#search-title").addEventListener(
+//     (evt, e => { e.preventDefault(); }), handleAddSubmitTitle,
+//     false));
+
+// document.querySelector("#search-title").addEventListener('click', e => {
+//   e.preventDefault();
+//   const selection = document.querySelector('#search-params').selectedIndex;
+
+//   const title = 0;
+//   const genre = 1;
+//   const keyword = 2;
+
+//   if (selection === title) {
+//     console.log('Search by title was selected');
+//     document
+//       .getElementById("search-title")
+//       .addEventListener("submit", handleAddSubmitTitle);
+//   } else if (selection === genre) {
+//     console.log('Search by genre was selected');
+//   } else {
+//     console.log(`Search by keyword(${keyword}) was selected`);
+//   }
+// })
+
+
