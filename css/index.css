@@ -107,7 +107,7 @@ body {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 5px;
   box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -227,6 +227,43 @@ body {
 
 svg {
   background-color: transparent;
+}
+
+select {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-right: none !important;
+}
+
+input {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
+.fg--search {
+  background: white;
+  position: relative;
+}
+
+.fg--search input {
+  width: 100%;
+  display: block;
+}
+
+.fg--search button {
+  background: transparent;
+ 
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.fg--search input:focus + button .fa-search {
+  color: red;
 }
 
 #video {

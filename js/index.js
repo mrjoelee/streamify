@@ -43,16 +43,51 @@ const streamImage = {
   youtube: `<a target="_blank" id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="#"><img id= "youtube" width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
 };
 
-let favorites = [];
+const genreArray = [
+  {genre: "action", code: "28"},
+  {genre: "adventure", code: "12"}, 
+  {genre: "animation", code: "16"},
+  {genre: "biography", code: "1"},
+  {genre: "comedy", code: "35"},
+  {genre: "crime", code: "80"},   
+  {genre: "documentary", code: "99"},
+  {genre: "drama", code: "18"},
+  {genre: "family", code: "10751"},
+  {genre: "fantasy", code: "14"},
+  {genre: "horror", code: "27"},
+  {genre: "musical", code: "4"},
+  {genre: "mystery", code: "9648"},
+  {genre: "romance", code: "10749"},
+  {genre: "science fiction", code: "878"},
+  {genre: "sports", code: "5"},
+  {genre: "thriller", code: "53"},
+  {genre: "war", code: "10752"}
+];
 
-//Get by Title Movies
-document
-  .getElementById("search-title")
-  .addEventListener("submit", handleAddSubmitTitle);
+const favorites = [];
 
-document
-  .getElementById("search-keyboard")
-  .addEventListener("submit", handleAddSubmitKeyboard);
+document.querySelector("#search-title").addEventListener('submit', e => {
+  e.preventDefault();
+  const selection = document.querySelector('#search-params').selectedIndex;
+
+  const title = 0;
+  const genre = 1;
+  const keyword = 2;
+
+  if (selection === title) {
+    console.log('Search by title was selected');
+    document
+      .getElementById("search-title")
+      .addEventListener("submit", handleAddSubmitTitle);
+  } else if (selection === genre) {
+    document
+    .getElementById("search-title")
+    .addEventListener("submit", handleAddSubmitKeyboard);
+  } else {
+
+    console.log(`Search by keyword(${keyword}) was selected`);
+  }
+})
 
 const selectPage = document.getElementById("navPage");
 selectPage.addEventListener("change", displayNewPage);
@@ -98,51 +133,29 @@ async function handleAddSubmitTitle(event) {
 
 async function handleAddSubmitKeyboard(event) {
   showTime();
-  event.preventDefault();
-  const inputValue = document.getElementById("keyboard-input").value;
-  //clears the forms after it hit searches
-  document.getElementById("search-keyboard").reset();
-
+  const genreValue = document.getElementById("title-input").getAttribute('data-id');
   let totalPages = 0;
   let page = 1;
-  // debugger;
-  let response = await axios.get(
-    "https://streaming-availability.p.rapidapi.com/search/ultra",
-    {
-      headers: {
-        "X-RapidAPI-Key": "56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d",
-        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-      },
-      params: {
-        country: "us",
-        services: "netflix,hulu,prime,disney,hbo,paramount,apple",
-        type: "movie",
-        order_by: "imdb_vote_count",
-        year_min: "1900",
-        year_max: "2022",
-        page: "1",
-        // genres: "18,80",
-        // genres_relation: "or",
-        desc: "true",
-        // language: "en",
-        // min_imdb_rating: "70",
-        // max_imdb_rating: "90",
-        // min_imdb_vote_count: "10000",
-        // max_imdb_vote_count: "1000000",
-        keyword: `${inputValue}`,
-        // output_language: "en",
-      },
-    }
-  );
 
-  const dataKeyboard = response.data;
-  totalPages = dataKeyboard.total_pages;
-  setTimeout(function () {
-    renderData(dataKeyboard.results);
-  }, 500);
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': '56fc230643msh7620609da5ab5a7p15eba2jsn84dde9e32f2d',
+      'X-RapidAPI-Host': 'streaming-availability.p.rapidapi.com'
+    }
+  };
+  
+  fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${genreValue}&page=1&output_language=en&language=en`, options)
+    .then(response => response.json())
+    .then(response => {
+      totalPages = response.total_pages;
+      setTimeout(function () {
+        renderData(response.results);
+      }, 500);
+    }).catch(err => console.error(err));
 
   //maintains the input search since it clears the input after the search is submit
-  selectPage.setAttribute("data-userInput", inputValue);
+  // selectPage.setAttribute("data-userInput", genreValue);
 
   //will remove pages from new search that have multiple pages
   clearChildrenElement(selectPage);
@@ -510,3 +523,32 @@ function deleteCurtain() {
     clearChildrenElement(scene);
   }, 5000);
 }
+
+// listens to search input field and makes suggestions
+document.getElementById("title-input").addEventListener('input', e => {
+  let genreContainer = document.querySelector("#genre-list");
+  
+  genreContainer.innerHTML = ""; 
+  for(let i = 0; i < genreArray.length; i++) {
+      if(genreArray[i].genre.includes(e.target.value.toLowerCase()) && e.target.value !== ""){
+          let genreItem =  `
+          
+            <li class="list-group-item" value="${genreArray[i].code}">${genreArray[i].genre}</li>
+          `;
+          genreContainer.insertAdjacentHTML("beforeend", genreItem);
+      }
+   
+  }
+  document.querySelectorAll('.list-group-item').forEach(element => {
+    element.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+    
+      let value = element.value;
+      document.querySelector('#title-input').value = element.innerText;
+      document.querySelector('#title-input').setAttribute('data-id', value);
+  
+  });
+})
+
+});
