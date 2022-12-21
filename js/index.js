@@ -155,7 +155,7 @@ async function handleAddSubmitKeyboard(event) {
     }).catch(err => console.error(err));
 
   //maintains the input search since it clears the input after the search is submit
-  selectPage.setAttribute("data-userInput", genreValue);
+  // selectPage.setAttribute("data-userInput", genreValue);
 
   //will remove pages from new search that have multiple pages
   clearChildrenElement(selectPage);
