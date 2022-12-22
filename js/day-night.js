@@ -1,3 +1,5 @@
+"use strict";
+
 //path (d) value of moon and sun emoji
 // the path of sun is morphed to moon and vice versa
 const moonPath =

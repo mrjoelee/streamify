@@ -62,8 +62,8 @@
           </div>
 
           <div>
-            <a class="navbar-brand" href="./about.html">About</a>
-            <a class="navbar-brand" href="./favorites.html">Favorites</a>
+            <a class="navbar-brand" href="./about.html"><i class="fa-sharp fa-solid fa-address-card fa-1x"></i></a>
+            <a class="navbar-brand" href="./favorites.html"><i class="fa-solid fa-star fa-1x"></i></a>
           </div>
         </div>
       </nav>
@@ -74,32 +74,16 @@
         <div class="input-group-prepend">
           <form id="search-title">
           <button
-            class="btn btn-secondary"
+            class="btn btn-light m-1"
             id="title"
             name="title"
             type="submit">
-            Title
+            <i class="fa-solid fa-film fa-2x"></i>
           </button>
-          <button
-            type="button"
-            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <span class="sr-only">Toggle Dropdown</span>
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
+          
         </div>
-        
           <input
-            class="form-control"
+            class="form-control m-1 rounded-3"
             type="search"
             placeholder="Title"
             aria-label="Title"
@@ -115,40 +99,40 @@
           <form id="search-keyboard" >            
         </div>  
         <input
-        class="form-control"
+        class="form-control m-1 rounded-3"
         type="search"
-        placeholder="Search"
+        placeholder="Related"
         aria-label="Search"
         id="keyboard-input"
         required
       />
       <button
-            class="btn btn-secondary"
+            class="btn btn-danger m-1"
             id="search"
             name="search"
             type="submit"
           >
-            Related To
+          <i class="fa-solid fa-ticket fa-2x"></i>
           </button>
           <button
             type="button"
             class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
             <span class="sr-only">Toggle Dropdown</span>
           </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+          <div class="dropdown-menu ">
+            <a class="dropdown-item" href="#">Genre</a>
+            <a class="dropdown-item" href="#">Selection</a>
+            <a class="dropdown-item" href="#">Is</a>
+            <a class="dropdown-item" href="#">Under</a>
+            <a class="dropdown-item" href="#">Construction...</a>
           </div>
         </form>
       </div>
-      <div class="container">
+      <div class="container-fluid">
         <div id="cardContainer" class="row d-flex justify-content-center"></div>
       </div>
       <button
