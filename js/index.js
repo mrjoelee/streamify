@@ -1,6 +1,6 @@
 "use strict";
 
-// const e = require("express");
+/*Variables*/
 
 const genreList = {
   1: "Biography",
@@ -42,8 +42,6 @@ const streamImage = {
   hulu: `<a target="_blank" class="stream_image" id="hulu" a title="The Walt Disney Company, NBCUniversal, Public domain, via Wikimedia Commons" href="#"><img width="55" alt="Hulu Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Hulu_Logo.svg/512px-Hulu_Logo.svg.png"></a>`,
   youtube: `<a target="_blank" id="video" title="Original: YouTube Vector:  Jarould, Public domain, via Wikimedia Commons" href="#"><img id= "youtube" width="32" alt="YouTube full-color icon (2017)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/128px-YouTube_full-color_icon_%282017%29.svg.png"></a>`,
 };
-
-let favorites = [];
 
 //Get by Title Movies
 document
@@ -183,7 +181,7 @@ function renderData(data) {
     data.forEach((movie) => {
       const movieCol = document.createElement("div");
       movieCol.classList.add(
-        "col-lg-3",
+        "col-lg-2",
         "col-md-4",
         "col-sm-6",
         "d-flex",
@@ -194,7 +192,7 @@ function renderData(data) {
       movieCol.innerHTML = `<div class="card">
         <div class="card__inner" style="position: relative;">
           <div class="card__face card__face--front" style="position: absolute;">
-            <img class="card-img-top"/> 
+            <img class="card-img-top img-fluid w-100"/> 
             <button button-id=${
               movie.tmdbId || movie.tmdbID
             } type="button" class="favorite btn" style="position: absolute; top: 90%; left: 78%">
@@ -245,46 +243,10 @@ function renderData(data) {
       const posterImage = movieCol.querySelector(".card-img-top");
       const streamDiv = movieCol.querySelector(".streams");
 
-      // object de-structuring
-      // const {posterURLs: {original},title,overview,streamingInfo,video} = movie
+      //checking streamers for movie title search
+      getStreamMovieTitle(stream);
 
-      //checks if the stream has a certain services.
-
-      // adding stream icons to card * keyword search
-
-      if (stream.hasOwnProperty("netflix")) {
-        const netflix = stream.netflix.us.link;
-        streamDiv.innerHTML += `${streamImage.netflix}`;
-        movieCol.querySelector("#netflix").setAttribute("href", netflix);
-      }
-      if (stream.hasOwnProperty("prime")) {
-        const prime = stream.prime.us.link;
-        streamDiv.innerHTML += `${streamImage.prime}`;
-        movieCol.querySelector("#prime").setAttribute("href", prime);
-      }
-      if (stream.hasOwnProperty("disney")) {
-        const disney = stream.disney.us.link;
-        streamDiv.innerHTML += `${streamImage.disney}`;
-        movieCol.querySelector("#disney").setAttribute("href", disney);
-      }
-      if (stream.hasOwnProperty("hbo")) {
-        const hbo = stream.hbo.us.link;
-        streamDiv.innerHTML += `${streamImage.hbo}`;
-        movieCol.querySelector("#hbo").setAttribute("href", hbo);
-      }
-      if (stream.hasOwnProperty("paramount")) {
-        const paramount = stream.paramount.us.link;
-        streamDiv.innerHTML += `${streamImage.paramount}`;
-        movieCol.querySelector("#paramount").setAttribute("href", paramount);
-      }
-      if (stream.hasOwnProperty("hulu")) {
-        const hulu = stream.hulu.us.link;
-        streamDiv.innerHTML += `${streamImage.hulu}`;
-        movieCol.querySelector("#hulu").setAttribute("href", hulu);
-      }
-
-      // adding stream icons to card * title search
-
+      //checking streamers for related search
       if (stream.hasOwnProperty("us") && streams.hasOwnProperty("netflix")) {
         const netflixT = streams.netflix[0].link;
         streamDiv.innerHTML += `${streamImage.netflix}`;
@@ -323,6 +285,10 @@ function renderData(data) {
       } else if (url.hasOwnProperty("500")) {
         const posterTwo = url["500"];
         posterImage.setAttribute("src", posterTwo);
+      } else {
+        const invalidImgUrl =
+          "https://t4.ftcdn.net/jpg/04/00/24/31/360_F_400243185_BOxON3h9avMUX10RsDkt3pJ8iQx72kS3.jpg";
+        posterImage.setAttribute("src", invalidImgUrl);
       }
 
       //TODO: how to stop for movies with no youtube link to not refresh.
@@ -506,4 +472,37 @@ function deleteCurtain() {
   setTimeout(function () {
     clearChildrenElement(scene);
   }, 5000);
+}
+
+function getStreamMovieTitle(stream) {
+  if (stream.hasOwnProperty("netflix")) {
+    const netflix = stream.netflix.us.link;
+    streamDiv.innerHTML += `${streamImage.netflix}`;
+    movieCol.querySelector("#netflix").setAttribute("href", netflix);
+  }
+  if (stream.hasOwnProperty("prime")) {
+    const prime = stream.prime.us.link;
+    streamDiv.innerHTML += `${streamImage.prime}`;
+    movieCol.querySelector("#prime").setAttribute("href", prime);
+  }
+  if (stream.hasOwnProperty("disney")) {
+    const disney = stream.disney.us.link;
+    streamDiv.innerHTML += `${streamImage.disney}`;
+    movieCol.querySelector("#disney").setAttribute("href", disney);
+  }
+  if (stream.hasOwnProperty("hbo")) {
+    const hbo = stream.hbo.us.link;
+    streamDiv.innerHTML += `${streamImage.hbo}`;
+    movieCol.querySelector("#hbo").setAttribute("href", hbo);
+  }
+  if (stream.hasOwnProperty("paramount")) {
+    const paramount = stream.paramount.us.link;
+    streamDiv.innerHTML += `${streamImage.paramount}`;
+    movieCol.querySelector("#paramount").setAttribute("href", paramount);
+  }
+  if (stream.hasOwnProperty("hulu")) {
+    const hulu = stream.hulu.us.link;
+    streamDiv.innerHTML += `${streamImage.hulu}`;
+    movieCol.querySelector("#hulu").setAttribute("href", hulu);
+  }
 }
