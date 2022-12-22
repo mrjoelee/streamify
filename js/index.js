@@ -145,13 +145,13 @@ async function handleAddSubmitKeyboard(event) {
     }
   };
   
-  fetch(`https://streaming-availability.p.rapidapi.com/search/ultra?country=us&services=netflix%2Chulu%2Cprime%2Cdisney%2Chbo%2Cparamount&type=movie&order_by=imdb_vote_count&year_min=1900&year_max=2022&page=1&genres=${genreValue}&genres_relation=or&desc=true&language=en&min_imdb_rating=70&max_imdb_rating=100&min_imdb_vote_count=1&max_imdb_vote_count=1000000&output_language=en`, options)
+  fetch(`https://streaming-availability.p.rapidapi.com/search/basic?country=us&service=netflix&type=movie&genre=${genreValue}&page=1&output_language=en&language=en`, options)
     .then(response => response.json())
     .then(response => {
       totalPages = response.total_pages;
-      console.log(response);
-      renderData(response.results);
-      
+      setTimeout(function () {
+        renderData(response.results);
+      }, 500);
     }).catch(err => console.error(err));
 
   //maintains the input search since it clears the input after the search is submit
@@ -196,20 +196,18 @@ function renderData(data) {
     data.forEach((movie) => {
       const movieCol = document.createElement("div");
       movieCol.classList.add(
-        
         "col-lg-3",
         "col-md-4",
         "col-sm-6",
-        "col-xs-10",
         "d-flex",
         "justify-content-center",
-     
+        "mt-4"
       );
 
       movieCol.innerHTML = `<div class="card">
         <div class="card__inner" style="position: relative;">
           <div class="card__face card__face--front" style="position: absolute;">
-            <img class="card-img-top img-fluid"/> 
+            <img class="card-img-top"/> 
             <button button-id=${
               movie.tmdbId || movie.tmdbID
             } type="button" class="favorite btn" style="position: absolute; top: 90%; left: 78%">

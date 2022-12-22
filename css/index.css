@@ -158,7 +158,6 @@ body {
 
 .card-img-top {
   overflow: hidden;
-
 }
 
 .card-title {
@@ -268,8 +267,8 @@ input {
 }
 
 #video {
-  left: 85%;
-  top: 50%;
+  padding-left: 85%;
+  padding-top: 12.5%;
   position: absolute;
 }
 .movie-info {
