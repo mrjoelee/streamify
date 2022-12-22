@@ -1,58 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Streamify</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/curtain.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css"
+    />
+  </head>
 
-<head>
-  <title>Streamify</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- Bootstrap CSS v5.2.1 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="./css/index.css" />
-  <link rel="stylesheet" href="./css/curtain.css" />
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
-</head>
+  <body>
+    <header>
+      <!-- place navbar here -->
+      <!-- <div class="container"> -->
+      <nav class="navbar navbar-dark bg-secondary">
+        <div class="container-fluid d-flex">
+          <div>
+            <a class="navbar-brand" href="#"> Streamify</a>
+            <sup>
+              <!-- Light/Dark Theme Toggler -->
+              <section>
+                <svg
+                  id="darkMode"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 55 55"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class="sun"
+                    d="M55 27.5C55 42.6878 42.6878 55 27.5 55C12.3122 55 0 42.6878 0 27.5C0 12.3122 12.3122 0 27.5 0C42.6878 0 55 12.3122 55 27.5Z"
+                    fill="#FBD301"
+                    fill-opacity="0.91"
+                  />
+                </svg>
+              </section>
+            </sup>
+          </div>
 
-<body>
-  <header>
-    <!-- place navbar here -->
-    <!-- <div class="container"> -->
-    <nav class="navbar navbar-dark bg-secondary">
-      <div class="container-fluid d-flex">
-        <div>
-          <a class="navbar-brand" href="#"> Streamify</a>
-          <span class="align-top">
-          <sup class="align-self-start">
-            <!-- Light/Dark Theme Toggler -->
-            <section>
-              <svg id="darkMode" width="20" height="20" viewBox="0 0 55 55" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path class="sun"
-                  d="M55 27.5C55 42.6878 42.6878 55 27.5 55C12.3122 55 0 42.6878 0 27.5C0 12.3122 12.3122 0 27.5 0C42.6878 0 55 12.3122 55 27.5Z"
-                  fill="#FBD301" fill-opacity="0.91" />
-              </svg>
-            </section>
-          </sup>
-        </span>
+          <div>
+            <a class="navbar-brand" href="./about.html">About</a>
+            <a class="navbar-brand" href="./favorites.html">Favorites</a>
+          </div>
         </div>
-
-        <div>
-          <a class="navbar-brand" href="./about.html">About</a>
-          <a class="navbar-brand" href="./favorites.html">Favorites</a>
-        </div>
-      </div>
-    </nav>
-    <!-- </div> -->
-  </header>
-  <main>
-
-    <!-- <div class="d-flex justify-content-center mt-4">
-       
+      </nav>
+      <!-- </div> -->
+    </header>
+    <main>
+      <!-- search by Keyboard -->
+      <div class="d-flex justify-content-center mt-4">
+        <!-- search by keyboard -->
         <form id="search-keyboard" class="w-75">
           <div class="d-flex justify-content-center">
             <button
@@ -75,13 +95,13 @@
             />
           </div>
         </form>
-      </div> -->
+      </div>
 
-    <!-- Search by Title -->
-    <div class="d-flex justify-content-center mt-4">
-      <!-- search by keyboard -->
-      <form id="search-title" class="w-75">
-        <!-- <div class="d-flex justify-content-center">
+      <!-- Search by Title -->
+      <div class="d-flex justify-content-center mt-4">
+        <!-- search by keyboard -->
+        <form id="search-title" class="w-75">
+          <div class="d-flex justify-content-center">
             <button
               class="btn btn-secondary"
               id="title"
@@ -101,72 +121,54 @@
               id="title-input"
               required
             />
-          </div> -->
-
-        <div class="d-flex">
-          <div style="width: 15%;">
-            <select id="search-params" class="form-control" aria-label=".form-select-lg example">
-              <option value="title">Title</option>
-              <option id="genre-option" value="genre">Genre</option>
-              <option value="keyword">Keyword</option>
-            </select>
           </div>
-          <div class="form-group fg--search" style="width: 85%;">
-            <!-- <input class="form-control" type="search" aria-label="Title" id="title-input" required> -->
-            <div class="dropdown">
-              <input id="title-input" class="form-control me-2 dropdown dropdown-toggle" data-bs-toggle="dropdown"
-                type="search" aria-label="Search" required>
-              <div>
-                <ul id="genre-list" class="dropdown-menu" style="font-size: 16pt;">
-                 
-                </ul>
-              </div>
-            </div>
-            <button class="btn" id="search-title" name="title" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+      <div class="container">
+        <div id="cardContainer" class="row d-flex justify-content-center"></div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-light btn-floating btn-lg"
+        id="upBtn"
+      >
+        <i class="fas fa-arrow-up"></i>
+      </button>
+      <div class="d-flex justify-content-center mt-4">
+        <div id="scene">
+          <div id="curtain">
+            <div class="ground"></div>
+            <div class="left"></div>
+            <div class="right"></div>
           </div>
-
-        </div>
-      </form>
-    </div>
-    <div class="container">
-      <div id="cardContainer" class="row d-flex justify-content-center"></div>
-    </div>
-    <button type="button" class="btn btn-light btn-floating btn-lg" id="upBtn">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <div class="d-flex justify-content-center mt-4 h-100">
-      <div id="scene">
-        <div id="curtain">
-          <div class="ground"></div>
-          <div class="left"></div>
-          <div class="right"></div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer class="container d-flex d-flex justify-content-center mt-4">
-    <!-- place footer here -->
-    <!-- creates Navigation Page -->
-    <select id="navPage" class="form-select form-select-sm d-none w-25 d-flex d-flex justify-content-center"></select>
-  </footer>
+    <footer class="container d-flex d-flex justify-content-center mt-4">
+      <!-- place footer here -->
+      <!-- creates Navigation Page -->
+      <select
+        id="navPage"
+        class="form-select form-select-sm d-none w-25 d-flex d-flex justify-content-center"
+      ></select>
+    </footer>
 
-  <!-- Bootstrap JavaScript Libraries -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-    crossorigin="anonymous"></script> -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+      integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+      crossorigin="anonymous"
+    ></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-    crossorigin="anonymous"></script>
-  <script src="js/index.js"></script>
-  <script src="js/day-night.js"></script>
-  <script src="lib/anime/anime.min.js"></script>
-</body>
-
+    <script src="js/index.js"></script>
+    <script src="js/day-night.js"></script>
+    <script src="lib/anime/anime.min.js"></script>
+  </body>
 </html>
