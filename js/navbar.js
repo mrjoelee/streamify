@@ -29,7 +29,7 @@ document.querySelector(".navbar").insertAdjacentHTML(
     </section>
   </sup> 
   </div>
-    <a class="navbar-brand" href="./about.html">About</a>
+  <a class="navbar-brand" href="./about.html"><i class="fa-sharp fa-solid fa-address-card fa-1x"></i></a>
   </div>
 `
 );
