@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         posterImage.setAttribute("src", posterTwo);
       }
 
-      //TODO: how to stop for movies with no youtube link to not refresh.
+      //check for youtube video links
       if (video.hasOwnProperty("youtubeTrailerVideoLink")) {
         const youTube = video.youtubeTrailerVideoLink;
         movieCol.querySelector("#video").setAttribute("href", youTube);
@@ -198,6 +198,8 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
       movieCol.querySelector(".card-title").textContent = title;
       movieCol.querySelector(".card-text").textContent = text;
+
+      //checks for directors, genre, starrings
       if (movie.hasOwnProperty("directors")) {
         movieCol.querySelector(
           "#director"
@@ -230,25 +232,29 @@ document.addEventListener("DOMContentLoaded", (e) => {
       });
 
       //removes the favorite cards from the favorite page
-      favMovie.addEventListener("click", (e) => {
+      favMovie.addEventListener("click", removeFavorite);
+
+      function removeFavorite(e) {
         e.preventDefault();
         e.stopPropagation();
         let btnId = parseInt(favMovie.getAttribute("button-id"));
         let data = JSON.parse(localStorage.getItem("favorites"));
 
+        //Title Movie
         if (btnId === movie.tmdbId) {
           data = data.filter((item) => item.tmdbId !== btnId);
-
           let unfavoriteCard = movieCol.querySelector("[movie-id]");
           unfavoriteCard.remove();
           localStorage.setItem("favorites", JSON.stringify(data));
+
+          //Related Movie
         } else {
           data = data.filter((item) => parseInt(item.tmdbID) !== btnId);
           let unfavoriteCardKey = movieCol.querySelector("[movie-id]");
           unfavoriteCardKey.remove();
           localStorage.setItem("favorites", JSON.stringify(data));
         }
-      });
+      }
     });
   }
 });

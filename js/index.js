@@ -48,15 +48,16 @@ document
   .getElementById("search-title")
   .addEventListener("submit", handleAddSubmitTitle);
 
+//Get by related keyboard
 document
   .getElementById("search-keyboard")
-  .addEventListener("submit", handleAddSubmitKeyboard);
+  .addEventListener("submit", handleAddRelatedMovie);
 
 const selectPage = document.getElementById("navPage");
 selectPage.addEventListener("change", displayNewPage);
 
+//paginates to each different pages
 async function displayNewPage(e) {
-  // console.log(e.target.value);
   getNavPage(e);
 }
 
@@ -79,22 +80,17 @@ async function handleAddSubmitTitle(event) {
         country: "us",
         type: "all",
         output_language: "en",
-        pages: "all",
       },
     }
   );
 
   const dataTitle = response.data;
-  console.log(dataTitle);
-  //clear the movies that were added.
-  setTimeout(function () {
-    renderData(dataTitle.result);
-  }, 3000);
+  //fetches the data
+  createMoviePoster(dataTitle.result);
 }
 
 //Search input by keyboard
-
-async function handleAddSubmitKeyboard(event) {
+async function handleAddRelatedMovie(event) {
   showTime();
   event.preventDefault();
   const inputValue = document.getElementById("keyboard-input").value;
@@ -135,9 +131,8 @@ async function handleAddSubmitKeyboard(event) {
 
   const dataKeyboard = response.data;
   totalPages = dataKeyboard.total_pages;
-  setTimeout(function () {
-    renderData(dataKeyboard.results);
-  }, 500);
+
+  createMoviePoster(dataKeyboard.results);
 
   //maintains the input search since it clears the input after the search is submit
   selectPage.setAttribute("data-userInput", inputValue);
@@ -146,30 +141,23 @@ async function handleAddSubmitKeyboard(event) {
   clearChildrenElement(selectPage);
   if (totalPages > 1) {
     for (let i = 1; i <= totalPages; i++) {
-      // <option value="1">1</option>
-
       selectPage.insertAdjacentHTML(
         "beforeend",
         `<option value="${i}">Page ${i}</option>`
       );
     }
-    //will show the options
+    //will show the options (pages)
     selectPage.classList.remove("d-none");
   } else {
-    //doesn't show the options
+    //doesn't show the options (pages)
     selectPage.classList.add("d-none");
   }
 }
 
-//removes the element that was created first
-function clearChildrenElement(element) {
-  while (element.firstElementChild) {
-    element.firstElementChild.remove();
-  }
-}
-
-function renderData(data) {
+function createMoviePoster(data) {
   const cardContainer = document.getElementById("cardContainer");
+
+  //removes the first search, when the 2nd search happens
   clearChildrenElement(cardContainer);
   //if the search is empty, then alert the user
   if (data === null || data.length === 0) {
@@ -227,8 +215,7 @@ function renderData(data) {
         </div>
         `;
 
-      //movie data for title = result and keyboard = results (variable that is getting from the api).
-      // const url = movie.posterURLs.original;
+      /* variables for movie properties */
       const url = movie.posterURLs;
       const cast = movie.cast;
       const director = movie.significants;
@@ -244,7 +231,36 @@ function renderData(data) {
       const streamDiv = movieCol.querySelector(".streams");
 
       //checking streamers for movie title search
-      getStreamMovieTitle(stream);
+      if (stream.hasOwnProperty("netflix")) {
+        const netflix = stream.netflix.us.link;
+        streamDiv.innerHTML += `${streamImage.netflix}`;
+        movieCol.querySelector("#netflix").setAttribute("href", netflix);
+      }
+      if (stream.hasOwnProperty("prime")) {
+        const prime = stream.prime.us.link;
+        streamDiv.innerHTML += `${streamImage.prime}`;
+        movieCol.querySelector("#prime").setAttribute("href", prime);
+      }
+      if (stream.hasOwnProperty("disney")) {
+        const disney = stream.disney.us.link;
+        streamDiv.innerHTML += `${streamImage.disney}`;
+        movieCol.querySelector("#disney").setAttribute("href", disney);
+      }
+      if (stream.hasOwnProperty("hbo")) {
+        const hbo = stream.hbo.us.link;
+        streamDiv.innerHTML += `${streamImage.hbo}`;
+        movieCol.querySelector("#hbo").setAttribute("href", hbo);
+      }
+      if (stream.hasOwnProperty("paramount")) {
+        const paramount = stream.paramount.us.link;
+        streamDiv.innerHTML += `${streamImage.paramount}`;
+        movieCol.querySelector("#paramount").setAttribute("href", paramount);
+      }
+      if (stream.hasOwnProperty("hulu")) {
+        const hulu = stream.hulu.us.link;
+        streamDiv.innerHTML += `${streamImage.hulu}`;
+        movieCol.querySelector("#hulu").setAttribute("href", hulu);
+      }
 
       //checking streamers for related search
       if (stream.hasOwnProperty("us") && streams.hasOwnProperty("netflix")) {
@@ -291,7 +307,7 @@ function renderData(data) {
         posterImage.setAttribute("src", invalidImgUrl);
       }
 
-      //TODO: how to stop for movies with no youtube link to not refresh.
+      //check if the movie has a youtube video
       if (video.hasOwnProperty("youtubeTrailerVideoLink")) {
         const youTube = video.youtubeTrailerVideoLink;
         movieCol.querySelector("#video").setAttribute("href", youTube);
@@ -302,6 +318,8 @@ function renderData(data) {
 
       movieCol.querySelector(".card-title").textContent = title;
       movieCol.querySelector(".card-text").textContent = text;
+
+      //check if movie has directors, genre, starring
       if (movie.hasOwnProperty("directors")) {
         movieCol.querySelector(
           "#director"
@@ -331,32 +349,37 @@ function renderData(data) {
       const flip = movieCol.querySelector(".card__inner");
       flip.addEventListener("click", function (e) {
         flip.classList.toggle("is-flipped");
-        // console.log(e.target);
       });
-      // console.log(flip);
 
-      favMovie.addEventListener("click", (e) => {
+      favMovie.addEventListener("click", favoriteMovie);
+
+      function favoriteMovie(e) {
         e.preventDefault();
         e.stopPropagation();
         let btnId = parseInt(favMovie.getAttribute("button-id"));
 
+        //loads the localStorage
         let data = JSON.parse(localStorage.getItem("favorites"));
+
+        //if localStorage is null, then it will create an empty array
         if (!data) {
           data = [];
         }
 
+        //finds for the correct movie via the tmbdId
         const isAlreadyStore = data.find(
           (movie) => movie.tmdbId === btnId || parseInt(movie.tmdbID) === btnId
         );
 
+        //if not store, then it will save it.
         if (!isAlreadyStore) {
-          console.log(isAlreadyStore);
           data.push(movie);
           localStorage.setItem("favorites", JSON.stringify(data));
           favMovie.innerHTML = `<div button-id="${
             movie.tmdbId || movie.tmdbID
           } class="_abm0"><span class="_aame"><svg aria-label="Unlike" class="_ab6-" color="#ed4956" fill="#ed4956" height="24" role="img" viewBox="0 0 48 48" width="24"><path d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"></path></svg></span></div>`;
         } else {
+          //if store, then it will remove it.
           data = data.filter(
             (item) => item.tmdbId !== btnId && parseInt(item.tmdbID) !== btnId
           );
@@ -366,20 +389,21 @@ function renderData(data) {
         </path>
       </svg>`;
         }
-      });
-
-      // console.log(document.querySelector('button[data-id]'));
-      // favMovie.addEventListener("click", (e) => {
-      //   e.preventDefault();
-      // });
+      }
     });
+  }
+}
+
+//removes the element that was created first
+function clearChildrenElement(element) {
+  while (element.firstElementChild) {
+    element.firstElementChild.remove();
   }
 }
 
 //pagination
 async function getNavPage(e) {
   let page = e.target.value;
-  // debugger;
 
   //gets the data attribute that was set from the search input
   const inputValue = selectPage.getAttribute("data-userInput");
@@ -415,13 +439,13 @@ async function getNavPage(e) {
   );
 
   const dataKeyboard = response.data;
-  renderData(dataKeyboard.results);
+  createMoviePoster(dataKeyboard.results);
 }
 
 //Get the button
 let upBtn = document.getElementById("upBtn");
 
-// When the user scrolls down 20px from the top of the document, show the button
+//when scrolling down, the button will appear
 window.onscroll = function () {
   scrollFunction();
 };
@@ -441,19 +465,6 @@ function backToTop() {
   document.documentElement.scrollTop = 0;
 }
 
-function getFavorites() {
-  let storedMovies = JSON.parse(localStorage.getItem("favorites"));
-  console.log(storedMovies === null);
-  if (storedMovies !== null && storedMovies.length !== 0) {
-    storedMovies.forEach((storedMovie) => {
-      favorites.push(storedMovie);
-    });
-  } else {
-    let emptyArray = [];
-    localStorage.setItem("favorites", JSON.stringify(emptyArray));
-  }
-}
-
 //curtain display function
 document.body.addEventListener("onload", focus());
 function showTime() {
@@ -465,44 +476,11 @@ function showTime() {
 
   setTimeout(function () {
     scene.style.display = "none";
-  }, 5000);
+  }, 3000);
 }
 
 function deleteCurtain() {
   setTimeout(function () {
     clearChildrenElement(scene);
-  }, 5000);
-}
-
-function getStreamMovieTitle(stream) {
-  if (stream.hasOwnProperty("netflix")) {
-    const netflix = stream.netflix.us.link;
-    streamDiv.innerHTML += `${streamImage.netflix}`;
-    movieCol.querySelector("#netflix").setAttribute("href", netflix);
-  }
-  if (stream.hasOwnProperty("prime")) {
-    const prime = stream.prime.us.link;
-    streamDiv.innerHTML += `${streamImage.prime}`;
-    movieCol.querySelector("#prime").setAttribute("href", prime);
-  }
-  if (stream.hasOwnProperty("disney")) {
-    const disney = stream.disney.us.link;
-    streamDiv.innerHTML += `${streamImage.disney}`;
-    movieCol.querySelector("#disney").setAttribute("href", disney);
-  }
-  if (stream.hasOwnProperty("hbo")) {
-    const hbo = stream.hbo.us.link;
-    streamDiv.innerHTML += `${streamImage.hbo}`;
-    movieCol.querySelector("#hbo").setAttribute("href", hbo);
-  }
-  if (stream.hasOwnProperty("paramount")) {
-    const paramount = stream.paramount.us.link;
-    streamDiv.innerHTML += `${streamImage.paramount}`;
-    movieCol.querySelector("#paramount").setAttribute("href", paramount);
-  }
-  if (stream.hasOwnProperty("hulu")) {
-    const hulu = stream.hulu.us.link;
-    streamDiv.innerHTML += `${streamImage.hulu}`;
-    movieCol.querySelector("#hulu").setAttribute("href", hulu);
-  }
+  }, 3000);
 }
