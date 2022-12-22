@@ -76,11 +76,11 @@
         <div class="input-group-prepend">
           <form id="search-title">
           <button
-            class="btn btn-light m-1"
+            class="search-btn"
             id="title"
             name="title"
             type="submit">
-            <i class="fa-solid fa-film fa-2x"></i>
+            <iconify-icon icon="noto-v1:cinema" width="35" height="40"></iconify-icon>
           </button>
           
         </div>
@@ -113,16 +113,20 @@
             id="search"
             name="search"
             type="submit"
+            class="search-btn"
           >
           <iconify-icon icon="noto:popcorn" width="35" height="40"></iconify-icon>
           </button>
           <button
             type="button"
-            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+            class="btn btn dropdown-toggle dropdown-toggle-split"
             data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
+            class="search-btn"
+            
           >
+          <iconify-icon id="coke" icon="lucide:cup-soda" width="30" height="40"></iconify-icon>
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu ">
