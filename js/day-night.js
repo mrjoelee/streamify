@@ -61,7 +61,7 @@ darkMode.addEventListener("click", () => {
     )
     .add(
       {
-        targets: [".card-link", ".text-md-center", "#profileCard"],
+        targets: [".card-link", "h4", "#profileCard"],
         backgroundColor: toggle ? "rgb(255,255,255)" : "rgb(22,22,22)",
         color: toggle ? "rgb(22,22,22)" : "rgb(255,255,255)",
       },
