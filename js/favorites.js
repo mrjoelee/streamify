@@ -236,6 +236,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
       function removeFavorite(e) {
         e.preventDefault();
+        location.reload();
         e.stopPropagation();
         let btnId = parseInt(favMovie.getAttribute("button-id"));
         let data = JSON.parse(localStorage.getItem("favorites"));
